@@ -1,71 +1,54 @@
-# Retro Game ROM Manager
+# Retrom - Retro Game ROM Manager
 
-This repository contains scripts for managing and downloading retro game ROMs from Internet Archive collections.
-
-## Scripts Overview
-
-### 1. `Retrom_for_mac_v1.sh`
-
-A shell script designed for macOS systems that provides a command-line interface for:
-- Searching and downloading retro game ROMs from Internet Archive collections
-- Managing ROM directories for various gaming platforms (NES, SNES, Genesis, Game Boy, etc.)
-- Verifying ROM directories and testing archive URLs
-- Organizing ROMs in a structured directory hierarchy
-
-This script stores ROMs in a directory structure under `$HOME/Desktop/$(whoami)/games-roms/`.
-
-### 2. `Retrom_for_rocknix_v1.sh`
-
-A variant of the ROM manager script optimized for RockNix systems (a Linux-based OS for retro gaming). This script includes:
-- All the functionality of the macOS version
-- Additional features for handling external drives
-- Enhanced ROM management capabilities specific to RockNix
-- Ability to copy ROMs to external storage
-
-This script stores ROMs in a directory structure under `/Volumes/games-roms/`.
-
-## Supported Platforms
-
-Both scripts support the following retro gaming platforms:
-- Nintendo Entertainment System (NES)
-- Super Nintendo Entertainment System (SNES)
-- Sega Genesis
-- Game Boy (GB)
-- Game Boy Advance (GBA)
-- Sega Game Gear
-- Neo Geo Pocket
-- Sega Master System
+Retrom is a powerful shell script utility designed to help you manage and download retro game ROMs from Internet Archive collections.
 
 ## Features
 
-- **Platform Selection**: Choose which gaming platform to work with
-- **ROM Search**: Search for specific ROMs by name
-- **ROM Download**: Download individual ROMs or entire collections
-- **Directory Management**: Automatically create and verify ROM directories
-- **URL Testing**: Test archive URLs to ensure they're accessible
-- **External Storage Support** (RockNix version): Copy ROMs to external drives
+- **Interactive Menu System**: Easy-to-use interface for managing your ROM collection
+- **Smart Directory Management**: Checks if the default ROM directory exists and offers to create it
+- **Multi-Platform Support**: Download ROMs for NES, SNES, Genesis, Game Boy, GBA, Game Gear, Neo Geo Pocket, and Sega Master System
+- **Flexible ROM Storage**: Customize where your ROMs are stored or use the default location
+- **Search Functionality**: Find specific ROMs across all supported platforms
+- **Bulk Downloads**: Download entire ROM collections for any supported platform
+- **Directory Verification**: Ensure all ROM directories are properly set up
+- **Archive URL Testing**: Verify that all Internet Archive sources are accessible
+- **External Storage Support**: Copy your ROM collection to external drives
 
 ## Usage
 
 1. Make the script executable:
    ```
-   chmod +x works_forpath_mac_v1.sh
-   ```
-   or
-   ```
-   chmod +x works_forpath_rocknix_v1.sh
+   chmod +x Retrom_for_rocknix_v1.sh
    ```
 
 2. Run the script:
    ```
-   ./works_forpath_mac_v1.sh
-   ```
-   or
-   ```
-   ./works_forpath_rocknix_v1.sh
+   ./Retrom_for_rocknix_v1.sh
    ```
 
-3. Follow the interactive menu to select options for managing your ROM collection
+3. Follow the interactive prompts to manage your ROM collection
+
+## Default ROM Directory
+
+By default, ROMs are stored in `$HOME/Desktop/$(whoami)/games-roms/`
+Alternatively, you can customize the location by setting the `ROMS_BASE_DIR` variable in the script or script will ask you to provide path ie:`/Volumes/games-roms/`.
+When you run the script:
+- If this directory already exists, the script will notify you
+- If it doesn't exist, you'll be asked if you want to create it
+- You can choose a different location at any time through the menu
+
+## Supported Platforms
+
+| Platform | ROM Directory | Archive Source |
+|----------|--------------|----------------|
+| NES | nes | Internet Archive NES Collection |
+| SNES | snes | Internet Archive SNES Collection |
+| Genesis | genesis | Internet Archive Genesis Collection |
+| Game Boy | gb | Internet Archive Game Boy Collection |
+| Game Boy Advance | gba | Internet Archive GBA Collection |
+| Game Gear | gamegear | Internet Archive Game Gear Collection |
+| Neo Geo Pocket | ngp | Internet Archive Neo Geo Pocket Collection |
+| Sega Master System | mastersystem | Internet Archive Master System Collection |
 
 ## Requirements
 
@@ -76,4 +59,4 @@ Both scripts support the following retro gaming platforms:
 
 ## Legal Notice
 
-These scripts are provided for educational purposes only. Users are responsible for ensuring they have the legal right to download and use any ROMs obtained through these scripts. The authors do not host or distribute ROMs and are not responsible for the content available through Internet Archive links.
+This script is provided for educational purposes only. Users are responsible for ensuring they have the legal right to download and use any ROMs obtained through this script. The authors do not host or distribute ROMs and are not responsible for the content available through Internet Archive links.
