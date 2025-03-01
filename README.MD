@@ -4,6 +4,7 @@ Retrom is a powerful shell script utility designed to help you manage and downlo
 
 ## Features
 
+- **Update your own URLs**: Google for URLs from archive.org and change it in provided script 
 - **Interactive Menu System**: Easy-to-use interface for managing your ROM collection
 - **Smart Directory Management**: Checks if the default ROM directory exists and offers to create it
 - **Multi-Platform Support**: Download ROMs for NES, SNES, Genesis, Game Boy, GBA, Game Gear, Neo Geo Pocket, and Sega Master System
