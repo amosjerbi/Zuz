@@ -2,7 +2,58 @@
 
 # Set variables
 CURRENT_PLATFORM=""
-ROMS_BASE_DIR="/Volumes/games-roms"
+DEFAULT_ROMS_BASE_DIR="$HOME/Desktop/$(whoami)/games-roms"
+ROMS_BASE_DIR="$DEFAULT_ROMS_BASE_DIR"
+
+# Check if DEFAULT_ROMS_BASE_DIR exists
+if [ -d "$DEFAULT_ROMS_BASE_DIR" ]; then
+    echo "Default ROMs directory exists at: $DEFAULT_ROMS_BASE_DIR"
+else
+    echo "Default ROMs directory does not exist at: $DEFAULT_ROMS_BASE_DIR"
+    echo "Do you want to create it? (y/n)"
+    read -r response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        if ! mkdir -p "$DEFAULT_ROMS_BASE_DIR"; then
+            echo "Cannot create default directory $DEFAULT_ROMS_BASE_DIR. Please check permissions."
+            exit 1
+        else
+            echo "Default ROMs directory created at: $DEFAULT_ROMS_BASE_DIR"
+        fi
+    else
+        echo "Default ROMs directory not created. Using current directory instead."
+        ROMS_BASE_DIR="$(pwd)"
+    fi
+fi
+
+# Function to set ROM base directory
+set_roms_base_dir() {
+    echo "Current ROMs directory: $ROMS_BASE_DIR"
+    echo "Do you want to change the ROMs directory? (y/n)"
+    read -r response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        echo "Enter new ROMs directory path:"
+        read -r new_dir
+        if [ -n "$new_dir" ]; then
+            ROMS_BASE_DIR="$new_dir"
+            echo "ROMs directory changed to: $ROMS_BASE_DIR"
+            # Update all platform directories
+            NES_DIR="$ROMS_BASE_DIR/nes"
+            SNES_DIR="$ROMS_BASE_DIR/snes"
+            GENESIS_DIR="$ROMS_BASE_DIR/genesis"
+            GB_DIR="$ROMS_BASE_DIR/gb"
+            GBA_DIR="$ROMS_BASE_DIR/gba"
+            GAMEGEAR_DIR="$ROMS_BASE_DIR/gamegear"
+            NGP_DIR="$ROMS_BASE_DIR/ngp"
+            SMS_DIR="$ROMS_BASE_DIR/mastersystem"
+        fi
+    fi
+}
+
+# Check for command line argument for ROMS_BASE_DIR
+if [ -n "$1" ]; then
+    ROMS_BASE_DIR="$1"
+fi
+
 NES_DIR="$ROMS_BASE_DIR/nes"
 SNES_DIR="$ROMS_BASE_DIR/snes"
 GENESIS_DIR="$ROMS_BASE_DIR/genesis"
@@ -18,7 +69,7 @@ declare -A ARCHIVE_URLS=(
     ["nes"]="https://archive.org/download/nes-collection"
     ["snes"]="https://archive.org/download/SuperNintendofull_rom_pack"
     ["genesis"]="https://archive.org/download/sega-genesis-romset-ultra-usa"
-    ["gb"]="https://archive.org/download/game-boy-collection"
+    ["gb"]="https://archive.org/download/GameBoy-Romset-by-LoLLo"
     ["gba"]="https://archive.org/download/GameboyAdvanceRomCollectionByGhostware"
     ["gg"]="https://archive.org/download/sega-game-gear-romset-ultra-us"
     ["ngp"]="https://archive.org/download/neogeopocketromcollectionmm1000"
@@ -330,39 +381,8 @@ search_roms() {
     echo "Debug: Using platform: $platform"
     echo "Debug: CURRENT_PLATFORM is set to: $CURRENT_PLATFORM"
     
-    # Explicitly set the archive URL based on the platform
-    local archive_url=""
-    case "$platform" in
-        "nes")
-            archive_url="https://archive.org/download/nes-collection"
-            ;;
-        "snes")
-            archive_url="https://archive.org/download/SuperNintendofull_rom_pack"
-            ;;
-        "genesis")
-            archive_url="https://archive.org/download/sega-genesis-romset-ultra-usa"
-            ;;
-        "gb")
-            archive_url="https://archive.org/download/GameBoy-Romset-by-LoLLo"
-            ;;
-        "gba")
-            archive_url="https://archive.org/download/GameboyAdvanceRomCollectionByGhostware"
-            ;;
-        "gg")
-            archive_url="https://archive.org/download/sega-game-gear-romset-ultra-us"
-            ;;
-        "ngp")
-            archive_url="https://archive.org/download/neogeopocketromcollectionmm1000"
-            ;;
-        "sms")
-            archive_url="https://archive.org/download/sega-master-system-romset-ultra-us"
-            ;;
-        *)
-            echo "Error: Unknown platform: $platform"
-            read -p "Press Enter to continue..."
-            return 1
-            ;;
-    esac
+    # Get the archive URL from the associative array
+    local archive_url="${ARCHIVE_URLS[$platform]}"
     
     if [ -z "$archive_url" ]; then
         echo "Error: No archive URL found for platform $(to_uppercase $platform)"
@@ -670,37 +690,8 @@ download_rom() {
         platform="$CURRENT_PLATFORM"
     fi
     
-    local archive_url=""
-    case "$platform" in
-        "nes")
-            archive_url="https://archive.org/download/nes-collection"
-            ;;
-        "snes")
-            archive_url="https://archive.org/download/SuperNintendofull_rom_pack"
-            ;;
-        "genesis")
-            archive_url="https://archive.org/download/sega-genesis-romset-ultra-usa"
-            ;;
-        "gb")
-            archive_url="https://archive.org/download/GameBoy-Romset-by-LoLLo"
-            ;;
-        "gba")
-            archive_url="https://archive.org/download/GameboyAdvanceRomCollectionByGhostware"
-            ;;
-        "gg")
-            archive_url="https://archive.org/download/sega-game-gear-romset-ultra-us"
-            ;;
-        "ngp")
-            archive_url="https://archive.org/download/neogeopocketromcollectionmm1000"
-            ;;
-        "sms")
-            archive_url="https://archive.org/download/sega-master-system-romset-ultra-us"
-            ;;
-        *)
-            echo "Error: Unknown platform: $platform"
-            return 1
-            ;;
-    esac
+    # Get the archive URL from the associative array
+    local archive_url="${ARCHIVE_URLS[$platform]}"
     
     if [ -z "$archive_url" ]; then
         echo "Error: No archive URL found for platform $(to_uppercase $platform)"
@@ -751,38 +742,9 @@ download_rom() {
 # Function to download all ROMs for a platform
 download_all_roms() {
     local platform="$CURRENT_PLATFORM"
-    local archive_url=""
-    case "$platform" in
-        "nes")
-            archive_url="https://archive.org/download/nes-collection"
-            ;;
-        "snes")
-            archive_url="https://archive.org/download/SuperNintendofull_rom_pack"
-            ;;
-        "genesis")
-            archive_url="https://archive.org/download/sega-genesis-romset-ultra-usa"
-            ;;
-        "gb")
-            archive_url="https://archive.org/download/GameBoy-Romset-by-LoLLo"
-            ;;
-        "gba")
-            archive_url="https://archive.org/download/GameboyAdvanceRomCollectionByGhostware"
-            ;;
-        "gg")
-            archive_url="https://archive.org/download/sega-game-gear-romset-ultra-us"
-            ;;
-        "ngp")
-            archive_url="https://archive.org/download/neogeopocketromcollectionmm1000"
-            ;;
-        "sms")
-            archive_url="https://archive.org/download/sega-master-system-romset-ultra-us"
-            ;;
-        *)
-            echo "Error: Unknown platform: $platform"
-            read -p "Press Enter to continue..."
-            return 1
-            ;;
-    esac
+    
+    # Get the archive URL from the associative array
+    local archive_url="${ARCHIVE_URLS[$platform]}"
     
     if [ -z "$archive_url" ]; then
         echo "Error: No archive URL found for platform $(to_uppercase $platform)"
@@ -1143,33 +1105,7 @@ test_archive_urls() {
     echo "===== Testing Archive URLs ====="
     
     for platform in "${!ARCHIVE_URLS[@]}"; do
-        local archive_url=""
-        case "$platform" in
-            "nes")
-                archive_url="https://archive.org/download/nes-collection"
-                ;;
-            "snes")
-                archive_url="https://archive.org/download/SuperNintendofull_rom_pack"
-                ;;
-            "genesis")
-                archive_url="https://archive.org/download/sega-genesis-romset-ultra-usa"
-                ;;
-            "gb")
-                archive_url="https://archive.org/download/GameBoy-Romset-by-LoLLo"
-                ;;
-            "gba")
-                archive_url="https://archive.org/download/GameboyAdvanceRomCollectionByGhostware"
-                ;;
-            "gg")
-                archive_url="https://archive.org/download/sega-game-gear-romset-ultra-us"
-                ;;
-            "ngp")
-                archive_url="https://archive.org/download/neogeopocketromcollectionmm1000"
-                ;;
-            "sms")
-                archive_url="https://archive.org/download/sega-master-system-romset-ultra-us"
-                ;;
-        esac
+        local archive_url="${ARCHIVE_URLS[$platform]}"
         
         echo "Testing $(to_uppercase $platform) URL: $archive_url"
         local http_code=$(curl -s -o /dev/null -w "%{http_code}" "$archive_url")
@@ -1179,18 +1115,9 @@ test_archive_urls() {
         else
             echo "❌ $(to_uppercase $platform) archive is NOT accessible (HTTP $http_code)"
             
-            # Try alternative URL if available
-            local alt_url="${ARCHIVE_URLS[$platform]}"
-            if [ -n "$alt_url" ] && [ "$alt_url" != "$archive_url" ]; then
-                echo "   Trying alternative URL: $alt_url"
-                local alt_http_code=$(curl -s -o /dev/null -w "%{http_code}" "$alt_url")
-                
-                if [ "$alt_http_code" -eq 200 ]; then
-                    echo "✅ Alternative $(to_uppercase $platform) archive is accessible (HTTP $alt_http_code)"
-                else
-                    echo "❌ Alternative $(to_uppercase $platform) archive is NOT accessible (HTTP $alt_http_code)"
-                fi
-            fi
+            # Since we're now using the associative array consistently,
+            # there are no alternative URLs to try
+            echo "   No alternative URL available."
         fi
         echo ""
     done
@@ -1262,6 +1189,8 @@ main_menu() {
         CURRENT_PLATFORM="genesis"
         echo "Default platform set to Genesis"
     fi
+    
+    set_roms_base_dir
     
     while true; do
         show_menu
