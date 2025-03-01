@@ -66,14 +66,14 @@ TEMP_FILE="/tmp/rom_list.txt"
 
 # Define platforms with their archive URLs
 declare -A ARCHIVE_URLS=(
-    ["nes"]="https://archive.org/download/nes-collection"
-    ["snes"]="https://archive.org/download/SuperNintendofull_rom_pack"
-    ["genesis"]="https://archive.org/download/sega-genesis-romset-ultra-usa"
-    ["gb"]="https://archive.org/download/GameBoy-Romset-by-LoLLo"
-    ["gba"]="https://archive.org/download/GameboyAdvanceRomCollectionByGhostware"
-    ["gg"]="https://archive.org/download/sega-game-gear-romset-ultra-us"
-    ["ngp"]="https://archive.org/download/neogeopocketromcollectionmm1000"
-    ["sms"]="https://archive.org/download/sega-master-system-romset-ultra-us"
+    ["nes"]="https://archive.org/download/"
+    ["snes"]="https://archive.org/download/"
+    ["genesis"]="https://archive.org/download/"
+    ["gb"]="https://archive.org/download/"
+    ["gba"]="https://archive.org/download/"
+    ["gg"]="https://archive.org/download/"
+    ["ngp"]="https://archive.org/download/"
+    ["sms"]="https://archive.org/download/"
 )
 
 # Function to get platform directory
