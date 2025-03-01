@@ -4,7 +4,7 @@ This repository contains scripts for managing and downloading retro game ROMs fr
 
 ## Scripts Overview
 
-### 1. `works_forpath_mac_v1.sh`
+### 1. `Retrom_for_mac_v1.sh`
 
 A shell script designed for macOS systems that provides a command-line interface for:
 - Searching and downloading retro game ROMs from Internet Archive collections
@@ -14,7 +14,7 @@ A shell script designed for macOS systems that provides a command-line interface
 
 This script stores ROMs in a directory structure under `$HOME/Desktop/$(whoami)/games-roms/`.
 
-### 2. `works_forpath_rocknix_v1.sh`
+### 2. `Retrom_for_rocknix_v1.sh`
 
 A variant of the ROM manager script optimized for RockNix systems (a Linux-based OS for retro gaming). This script includes:
 - All the functionality of the macOS version
