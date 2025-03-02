@@ -11,7 +11,7 @@ Retrom is a shell script utility designed to help you manage and download retro 
 
 2. Run the script:
    ```
-   ./Retrom_for_rocknix_v1.sh
+   ./Retrom_v1.sh
    ```
 
 3. Follow the interactive prompts to manage your ROM collection
