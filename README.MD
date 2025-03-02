@@ -18,12 +18,21 @@ Retrom is a shell script utility designed to help you manage and download retro 
 
 ## Default ROM Directory
 
-By default, ROMs are stored in `$HOME/Desktop/$(whoami)/games-roms/`
-Alternatively, you can customize the location by setting the `ROMS_BASE_DIR` variable in the script or script will ask you to provide path ie:`/Volumes/games-roms/`.
 When you run the script:
 - If this directory already exists, the script will notify you
 - If it doesn't exist, you'll be asked if you want to create it
 - You can choose a different location at any time through the menu
+
+By default, ROMs are stored in
+   ```
+`$HOME/Desktop/$(whoami)/games-roms/`
+   ```
+Alternatively, the script will ask you if you want another target location. Such the one available in rocknix directory:
+   ```
+`/Volumes/games-roms/`.
+   ```
+
+you can also customize the location by setting the `ROMS_BASE_DIR` variable in the script.
 
 ## Supported Platforms
 
