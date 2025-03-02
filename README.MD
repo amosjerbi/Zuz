@@ -27,7 +27,7 @@ By default, ROMs are stored in
    ```
 `$HOME/Desktop/$(whoami)/games-roms/`
    ```
-Alternatively, the script will ask you if you want another target location. Such the one available in rocknix directory:
+Alternatively, the script will ask you if you want another target location. Like in Rocknix for example:
    ```
 `/Volumes/games-roms/`.
    ```
