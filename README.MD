@@ -29,7 +29,7 @@ By default, ROMs are stored in
    ```
 Alternatively, the script will ask you if you want another target location. Like in Rocknix for example:
    ```
-`/Volumes/games-roms/`.
+`/Volumes/games-roms/`
    ```
 
 you can also customize the location by setting the `ROMS_BASE_DIR` variable in the script.
