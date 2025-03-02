@@ -42,9 +42,20 @@ set_roms_base_dir() {
             GENESIS_DIR="$ROMS_BASE_DIR/genesis"
             GB_DIR="$ROMS_BASE_DIR/gb"
             GBA_DIR="$ROMS_BASE_DIR/gba"
+            GBC_DIR="$ROMS_BASE_DIR/gbc"
             GAMEGEAR_DIR="$ROMS_BASE_DIR/gamegear"
             NGP_DIR="$ROMS_BASE_DIR/ngp"
             SMS_DIR="$ROMS_BASE_DIR/mastersystem"
+            SEGACD_DIR="$ROMS_BASE_DIR/segacd"
+            SEGA32X_DIR="$ROMS_BASE_DIR/sega32x"
+            SATURN_DIR="$ROMS_BASE_DIR/saturn"
+            TG16_DIR="$ROMS_BASE_DIR/tg16"
+            TGCD_DIR="$ROMS_BASE_DIR/tgcd"
+            PS1_DIR="$ROMS_BASE_DIR/ps1"
+            PS2_DIR="$ROMS_BASE_DIR/ps2"
+            N64_DIR="$ROMS_BASE_DIR/n64"
+            DREAMCAST_DIR="$ROMS_BASE_DIR/dreamcast"
+            LYNX_DIR="$ROMS_BASE_DIR/lynx"
         fi
     fi
 }
@@ -59,22 +70,89 @@ SNES_DIR="$ROMS_BASE_DIR/snes"
 GENESIS_DIR="$ROMS_BASE_DIR/genesis"
 GB_DIR="$ROMS_BASE_DIR/gb"
 GBA_DIR="$ROMS_BASE_DIR/gba"
+GBC_DIR="$ROMS_BASE_DIR/gbc"
 GAMEGEAR_DIR="$ROMS_BASE_DIR/gamegear"
 NGP_DIR="$ROMS_BASE_DIR/ngp"
 SMS_DIR="$ROMS_BASE_DIR/mastersystem"
+SEGACD_DIR="$ROMS_BASE_DIR/segacd"
+SEGA32X_DIR="$ROMS_BASE_DIR/sega32x"
+SATURN_DIR="$ROMS_BASE_DIR/saturn"
+TG16_DIR="$ROMS_BASE_DIR/tg16"
+TGCD_DIR="$ROMS_BASE_DIR/tgcd"
+PS1_DIR="$ROMS_BASE_DIR/ps1"
+PS2_DIR="$ROMS_BASE_DIR/ps2"
+N64_DIR="$ROMS_BASE_DIR/n64"
+DREAMCAST_DIR="$ROMS_BASE_DIR/dreamcast"
+LYNX_DIR="$ROMS_BASE_DIR/lynx"
 TEMP_FILE="/tmp/rom_list.txt"
 
-# Define platforms with their archive URLs
-declare -A ARCHIVE_URLS=(
-    ["nes"]="https://archive.org/download/"
-    ["snes"]="https://archive.org/download/"
-    ["genesis"]="https://archive.org/download/"
-    ["gb"]="https://archive.org/download/"
-    ["gba"]="https://archive.org/download/"
-    ["gg"]="https://archive.org/download/"
-    ["ngp"]="https://archive.org/download/"
-    ["sms"]="https://archive.org/download/"
-)
+# Define function to get archive URL for a platform
+get_archive_url() {
+    local platform="$1"
+    
+    case "$platform" in
+        "nes")
+            echo "https://archive.org/download/"
+            ;;
+        "snes")
+            echo "https://archive.org/download/"
+            ;;
+        "genesis")
+            echo "https://archive.org/download/"
+            ;;
+        "gb")
+            echo "https://archive.org/download/"
+            ;;
+        "gba")
+            echo "https://archive.org/download/"
+            ;;
+        "gbc")
+            echo "https://archive.org/download/"
+            ;;
+        "gg")
+            echo "https://archive.org/download/"
+            ;;
+        "ngp")
+            echo "https://archive.org/download/"
+            ;;
+        "sms")
+            echo "https://archive.org/download/"
+            ;;
+        "segacd")
+            echo "https://archive.org/download/"
+            ;;
+        "sega32x")
+            echo "https://archive.org/download/"
+            ;;
+        "saturn")
+            echo "https://archive.org/download/"
+            ;;
+        "tg16")
+            echo "https://archive.org/download/"
+            ;;
+        "tgcd")
+            echo "https://archive.org/download/"
+            ;;
+        "ps1")
+            echo "https://archive.org/download/"
+            ;;
+        "ps2")
+            echo "https://archive.org/download/"
+            ;;
+        "n64")
+            echo "https://archive.org/download/"
+            ;;
+        "dreamcast")
+            echo "https://archive.org/download/"
+            ;;
+        "lynx")
+            echo "https://archive.org/download/"
+            ;;
+        *)
+            echo ""
+            ;;
+    esac
+}
 
 # Function to get platform directory
 get_platform_dir() {
@@ -96,6 +174,9 @@ get_platform_dir() {
         "gba")
             echo "$GBA_DIR"
             ;;
+        "gbc")
+            echo "$GBC_DIR"
+            ;;
         "gg")
             echo "$GAMEGEAR_DIR"
             ;;
@@ -104,6 +185,36 @@ get_platform_dir() {
             ;;
         "sms")
             echo "$SMS_DIR"
+            ;;
+        "segacd")
+            echo "$SEGACD_DIR"
+            ;;
+        "sega32x")
+            echo "$SEGA32X_DIR"
+            ;;
+        "saturn")
+            echo "$SATURN_DIR"
+            ;;
+        "tg16")
+            echo "$TG16_DIR"
+            ;;
+        "tgcd")
+            echo "$TGCD_DIR"
+            ;;
+        "ps1")
+            echo "$PS1_DIR"
+            ;;
+        "ps2")
+            echo "$PS2_DIR"
+            ;;
+        "n64")
+            echo "$N64_DIR"
+            ;;
+        "dreamcast")
+            echo "$DREAMCAST_DIR"
+            ;;
+        "lynx")
+            echo "$LYNX_DIR"
             ;;
         *)
             echo "$ROMS_BASE_DIR/$platform"
@@ -179,6 +290,94 @@ fi
 if [ ! -d "$SMS_DIR" ]; then
     if ! mkdir -p "$SMS_DIR"; then
         echo "Cannot create Master System directory $SMS_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create GBC directory if it doesn't exist
+if [ ! -d "$GBC_DIR" ]; then
+    if ! mkdir -p "$GBC_DIR"; then
+        echo "Cannot create Game Boy Color directory $GBC_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create Sega CD directory if it doesn't exist
+if [ ! -d "$SEGACD_DIR" ]; then
+    if ! mkdir -p "$SEGACD_DIR"; then
+        echo "Cannot create Sega CD directory $SEGACD_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create Sega 32X directory if it doesn't exist
+if [ ! -d "$SEGA32X_DIR" ]; then
+    if ! mkdir -p "$SEGA32X_DIR"; then
+        echo "Cannot create Sega 32X directory $SEGA32X_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create Saturn directory if it doesn't exist
+if [ ! -d "$SATURN_DIR" ]; then
+    if ! mkdir -p "$SATURN_DIR"; then
+        echo "Cannot create Saturn directory $SATURN_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create TurboGrafx-16 directory if it doesn't exist
+if [ ! -d "$TG16_DIR" ]; then
+    if ! mkdir -p "$TG16_DIR"; then
+        echo "Cannot create TurboGrafx-16 directory $TG16_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create TurboGrafx-CD directory if it doesn't exist
+if [ ! -d "$TGCD_DIR" ]; then
+    if ! mkdir -p "$TGCD_DIR"; then
+        echo "Cannot create TurboGrafx-CD directory $TGCD_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create PlayStation directory if it doesn't exist
+if [ ! -d "$PS1_DIR" ]; then
+    if ! mkdir -p "$PS1_DIR"; then
+        echo "Cannot create PlayStation directory $PS1_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create PlayStation 2 directory if it doesn't exist
+if [ ! -d "$PS2_DIR" ]; then
+    if ! mkdir -p "$PS2_DIR"; then
+        echo "Cannot create PlayStation 2 directory $PS2_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create Nintendo 64 directory if it doesn't exist
+if [ ! -d "$N64_DIR" ]; then
+    if ! mkdir -p "$N64_DIR"; then
+        echo "Cannot create Nintendo 64 directory $N64_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create Dreamcast directory if it doesn't exist
+if [ ! -d "$DREAMCAST_DIR" ]; then
+    if ! mkdir -p "$DREAMCAST_DIR"; then
+        echo "Cannot create Dreamcast directory $DREAMCAST_DIR. Please check permissions."
+        exit 1
+    fi
+fi
+
+# Create Lynx directory if it doesn't exist
+if [ ! -d "$LYNX_DIR" ]; then
+    if ! mkdir -p "$LYNX_DIR"; then
+        echo "Cannot create Lynx directory $LYNX_DIR. Please check permissions."
         exit 1
     fi
 fi
@@ -273,12 +472,23 @@ select_platform() {
     echo "2. SNES (Super Nintendo)"
     echo "3. GB (Game Boy)"
     echo "4. GBA (Game Boy Advance)"
-    echo "5. SMS (Sega Master System)"
-    echo "6. Genesis (Sega Genesis)"
-    echo "7. GG (Sega Game Gear)"
-    echo "8. NGP (Neo Geo Pocket)"
+    echo "5. GBC (Game Boy Color)"
+    echo "6. SMS (Sega Master System)"
+    echo "7. Genesis (Sega Genesis)"
+    echo "8. SEGACD (Sega CD)"
+    echo "9. SEGA32X (Sega 32X)"
+    echo "10. SATURN (Sega Saturn)"
+    echo "11. GG (Sega Game Gear)"
+    echo "12. NGP (Neo Geo Pocket)"
+    echo "13. TG16 (TurboGrafx-16)"
+    echo "14. TGCD (TurboGrafx-CD)"
+    echo "15. PS1 (PlayStation)"
+    echo "16. PS2 (PlayStation 2)"
+    echo "17. N64 (Nintendo 64)"
+    echo "18. DREAMCAST (Sega Dreamcast)"
+    echo "19. LYNX (Atari Lynx)"
     
-    read -p "Enter your choice (1-8): " platform_choice
+    read -p "Enter your choice (1-19): " platform_choice
     
     case $platform_choice in
         1)
@@ -298,20 +508,64 @@ select_platform() {
             echo "Selected platform: Game Boy Advance"
             ;;
         5)
+            CURRENT_PLATFORM="gbc"
+            echo "Selected platform: Game Boy Color"
+            ;;
+        6)
             CURRENT_PLATFORM="sms"
             echo "Selected platform: Sega Master System"
             ;;
-        6)
+        7)
             CURRENT_PLATFORM="genesis"
             echo "Selected platform: Genesis"
             ;;
-        7)
+        8)
+            CURRENT_PLATFORM="segacd"
+            echo "Selected platform: Sega CD"
+            ;;
+        9)
+            CURRENT_PLATFORM="sega32x"
+            echo "Selected platform: Sega 32X"
+            ;;
+        10)
+            CURRENT_PLATFORM="saturn"
+            echo "Selected platform: Sega Saturn"
+            ;;
+        11)
             CURRENT_PLATFORM="gg"
             echo "Selected platform: Sega Game Gear"
             ;;
-        8)
+        12)
             CURRENT_PLATFORM="ngp"
             echo "Selected platform: Neo Geo Pocket"
+            ;;
+        13)
+            CURRENT_PLATFORM="tg16"
+            echo "Selected platform: TurboGrafx-16"
+            ;;
+        14)
+            CURRENT_PLATFORM="tgcd"
+            echo "Selected platform: TurboGrafx-CD"
+            ;;
+        15)
+            CURRENT_PLATFORM="ps1"
+            echo "Selected platform: PlayStation"
+            ;;
+        16)
+            CURRENT_PLATFORM="ps2"
+            echo "Selected platform: PlayStation 2"
+            ;;
+        17)
+            CURRENT_PLATFORM="n64"
+            echo "Selected platform: Nintendo 64"
+            ;;
+        18)
+            CURRENT_PLATFORM="dreamcast"
+            echo "Selected platform: Sega Dreamcast"
+            ;;
+        19)
+            CURRENT_PLATFORM="lynx"
+            echo "Selected platform: Atari Lynx"
             ;;
         *)
             echo "Invalid choice. Using default platform: Genesis"
@@ -327,16 +581,27 @@ list_platforms() {
     
     # Explicitly list all platforms with their URLs
     local i=1
-    local platforms_array=("nes" "snes" "gb" "gba" "sms" "genesis" "gg" "ngp")
+    local platforms_array=("nes" "snes" "gb" "gba" "gbc" "sms" "genesis" "segacd" "sega32x" "saturn" "gg" "ngp" "tg16" "tgcd" "ps1" "ps2" "n64" "dreamcast" "lynx")
     local descriptions=(
         "Nintendo Entertainment System"
         "Super Nintendo Entertainment System"
         "Game Boy"
         "Game Boy Advance"
+        "Game Boy Color"
         "Sega Master System"
         "Sega Genesis"
+        "Sega CD"
+        "Sega 32X"
+        "Sega Saturn"
         "Sega Game Gear"
         "Neo Geo Pocket"
+        "TurboGrafx-16"
+        "TurboGrafx-CD"
+        "PlayStation"
+        "PlayStation 2"
+        "Nintendo 64"
+        "Sega Dreamcast"
+        "Atari Lynx"
     )
     
     # Display platforms
@@ -344,7 +609,7 @@ list_platforms() {
         platform="${platforms_array[$i]}"
         description="${descriptions[$i]}"
         echo "$((i+1)). $(to_uppercase $platform) - $description"
-        echo "   URL: ${ARCHIVE_URLS[$platform]}"
+        echo "   URL: $(get_archive_url $platform)"
     done
     
     echo "============================="
@@ -377,12 +642,8 @@ search_roms() {
         platform="$CURRENT_PLATFORM"
     fi
     
-    # Debug output
-    echo "Debug: Using platform: $platform"
-    echo "Debug: CURRENT_PLATFORM is set to: $CURRENT_PLATFORM"
-    
-    # Get the archive URL from the associative array
-    local archive_url="${ARCHIVE_URLS[$platform]}"
+    # Get the archive URL from the function
+    local archive_url=$(get_archive_url "$platform")
     
     if [ -z "$archive_url" ]; then
         echo "Error: No archive URL found for platform $(to_uppercase $platform)"
@@ -396,9 +657,19 @@ search_roms() {
     # Get the list of ROMs from the archive
     echo "Fetching initial ROM list..."
     
-    # Get all zip files from the archive
-    curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
-    sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+    # Check if we're dealing with GBC platform which has .gbc files instead of .zip files
+    if [ "$platform" = "gbc" ]; then
+        curl -s "$archive_url/" | grep -o '<a href="[^"]*\.gbc">' | 
+        sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+    elif [ "$platform" = "ps1" ]; then
+        # PS1 platform uses .bin and .cue files
+        curl -s "$archive_url/" | grep -o '<a href="[^"]*\.cue">' | 
+        sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+    else
+        # Get all zip files from the archive
+        curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
+        sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+    fi
     
     local initial_count=$(wc -l < "$TEMP_FILE")
     echo "Initial ROM count: $initial_count"
@@ -420,8 +691,23 @@ search_roms() {
             # For example, "sonic" might be in "Sonic the Hedgehog" or "Sonic & Knuckles"
             echo "No direct matches found, trying more lenient search..."
             
+            # Make sure we have a backup of all ROMs
+            if [ ! -f "${TEMP_FILE}.all" ]; then
+                # If the .all file doesn't exist, recreate it
+                if [ "$platform" = "gbc" ]; then
+                    curl -s "$archive_url/" | grep -o '<a href="[^"]*\.gbc">' | 
+                    sed 's/<a href="\([^"]*\)">/\1/' > "${TEMP_FILE}.all"
+                elif [ "$platform" = "ps1" ]; then
+                    curl -s "$archive_url/" | grep -o '<a href="[^"]*\.cue">' | 
+                    sed 's/<a href="\([^"]*\)">/\1/' > "${TEMP_FILE}.all"
+                else
+                    curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
+                    sed 's/<a href="\([^"]*\)">/\1/' > "${TEMP_FILE}.all"
+                fi
+            fi
+            
             # Use the original list of all ROMs
-            mv "${TEMP_FILE}.all" "$TEMP_FILE"
+            cp "${TEMP_FILE}.all" "$TEMP_FILE"
             
             # Try different variations of the search term
             grep -i "$search_term" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
@@ -430,7 +716,7 @@ search_roms() {
             search_count=$(wc -l < "${TEMP_FILE}.filtered")
             if [ "$search_count" -eq 0 ]; then
                 echo "Still no matches, showing all ROMs for manual selection..."
-                mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
             else
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             fi
@@ -448,7 +734,7 @@ search_roms() {
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 else
                     # Otherwise, use all ROMs and just exclude obvious non-NES ones
-                    mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
                     grep -v -i "genesis\|megadrive\|32x\|sega\|gameboy\|gba\|advance\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 fi
@@ -466,7 +752,7 @@ search_roms() {
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 else
                     # Otherwise, use all ROMs and just exclude obvious non-SNES ones
-                    mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
                     grep -v -i "genesis\|megadrive\|32x\|sega\|gameboy\|gba\|advance\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 fi
@@ -484,7 +770,7 @@ search_roms() {
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 else
                     # Otherwise, use all ROMs and just exclude obvious non-Genesis ones
-                    mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
                     grep -v -i "nintendo\|nes\|snes\|famicom\|mario\|zelda\|gameboy\|gba\|advance\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 fi
@@ -502,7 +788,7 @@ search_roms() {
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 else
                     # Otherwise, use all ROMs and just exclude obvious non-GB ones
-                    mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
                     grep -v -i "genesis\|megadrive\|32x\|sega\|advance\|gba\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 fi
@@ -517,7 +803,7 @@ search_roms() {
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 else
                     # Otherwise, use all ROMs and just exclude obvious non-GBA ones
-                    mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
                     grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 fi
@@ -532,7 +818,7 @@ search_roms() {
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 else
                     # Otherwise, use all ROMs and just exclude obvious non-GG ones
-                    mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
                     grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 fi
@@ -547,7 +833,7 @@ search_roms() {
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 else
                     # Otherwise, use all ROMs and just exclude obvious non-NGP ones
-                    mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
                     grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 fi
@@ -562,8 +848,38 @@ search_roms() {
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 else
                     # Otherwise, use all ROMs and just exclude obvious non-SMS ones
-                    mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
                     grep -v -i "genesis\|megadrive\|32x\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox\|gameboy\|gba\|advance" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
+                    mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
+                fi
+                ;;
+            "gbc")
+                # Try to find GBC-specific ROMs
+                grep -i "gameboy\|color\|gbc" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
+                
+                # If we found a good number of GBC ROMs, use those
+                local gbc_count=$(wc -l < "${TEMP_FILE}.filtered")
+                if [ "$gbc_count" -gt 50 ]; then
+                    mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
+                else
+                    # Otherwise, use all ROMs and just exclude obvious non-GBC ones
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
+                    grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox\|advance\|gba" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
+                    mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
+                fi
+                ;;
+            "ps1")
+                # Try to find PS1-specific ROMs
+                grep -i "playstation\|ps1\|psx" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
+                
+                # If we found a good number of PS1 ROMs, use those
+                local ps1_count=$(wc -l < "${TEMP_FILE}.filtered")
+                if [ "$ps1_count" -gt 50 ]; then
+                    mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
+                else
+                    # Otherwise, use all ROMs and just exclude obvious non-PS1 ones
+                    cp "${TEMP_FILE}.all" "$TEMP_FILE"
+                    grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|gameboy\|gba\|advance\|xbox\|ps2" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                     mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
                 fi
                 ;;
@@ -588,8 +904,16 @@ search_roms() {
         echo "Trying alternative approach..."
         
         # Alternative approach: get all zip files and rely on user to select the right ones
-        curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
-        sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+        if [ "$platform" = "gbc" ]; then
+            curl -s "$archive_url/" | grep -o '<a href="[^"]*\.gbc">' | 
+            sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+        elif [ "$platform" = "ps1" ]; then
+            curl -s "$archive_url/" | grep -o '<a href="[^"]*\.cue">' | 
+            sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+        else
+            curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
+            sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+        fi
         
         # Decode URL-encoded filenames
         > "${TEMP_FILE}.decoded"
@@ -690,8 +1014,8 @@ download_rom() {
         platform="$CURRENT_PLATFORM"
     fi
     
-    # Get the archive URL from the associative array
-    local archive_url="${ARCHIVE_URLS[$platform]}"
+    # Get the archive URL from the function
+    local archive_url=$(get_archive_url "$platform")
     
     if [ -z "$archive_url" ]; then
         echo "Error: No archive URL found for platform $(to_uppercase $platform)"
@@ -723,6 +1047,23 @@ download_rom() {
     # Download the ROM file
     curl -s -L -o "$platform_dir/$decoded_rom_name" "$download_url"
     
+    # For PS1 platform, also download the corresponding .bin file if we're downloading a .cue file
+    if [ "$platform" = "ps1" ] && [[ "$rom_file" == *".cue" ]]; then
+        local bin_file="${rom_file%.cue}.bin"
+        local encoded_bin_file=$(echo "$bin_file" | sed 's/ /%20/g')
+        local bin_download_url="${archive_url}/${encoded_bin_file}"
+        local decoded_bin_name=$(urldecode "$(basename "$bin_file")")
+        
+        echo "Also downloading corresponding .bin file: $decoded_bin_name"
+        curl -s -L -o "$platform_dir/$decoded_bin_name" "$bin_download_url"
+        
+        if [ $? -eq 0 ]; then
+            echo ".bin file download successful!"
+        else
+            echo "Error downloading .bin file. You may need to download it manually."
+        fi
+    fi
+    
     if [ $? -eq 0 ]; then
         echo "Download successful!"
         echo "ROM saved to: $platform_dir/$decoded_rom_name"
@@ -743,8 +1084,8 @@ download_rom() {
 download_all_roms() {
     local platform="$CURRENT_PLATFORM"
     
-    # Get the archive URL from the associative array
-    local archive_url="${ARCHIVE_URLS[$platform]}"
+    # Get the archive URL from the function
+    local archive_url=$(get_archive_url "$platform")
     
     if [ -z "$archive_url" ]; then
         echo "Error: No archive URL found for platform $(to_uppercase $platform)"
@@ -758,9 +1099,19 @@ download_all_roms() {
     # Get the list of ROMs from the archive
     echo "Fetching ROM list..."
     
-    # Get all zip files from the archive
-    curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
-    sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+    # Check if we're dealing with GBC platform which has .gbc files instead of .zip files
+    if [ "$platform" = "gbc" ]; then
+        curl -s "$archive_url/" | grep -o '<a href="[^"]*\.gbc">' | 
+        sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+    elif [ "$platform" = "ps1" ]; then
+        # PS1 platform uses .bin and .cue files
+        curl -s "$archive_url/" | grep -o '<a href="[^"]*\.cue">' | 
+        sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+    else
+        # Get all zip files from the archive
+        curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
+        sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+    fi
     
     # Save all ROMs before filtering
     cp "$TEMP_FILE" "${TEMP_FILE}.all"
@@ -777,7 +1128,7 @@ download_all_roms() {
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             else
                 # Otherwise, use all ROMs and just exclude obvious non-NES ones
-                mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
                 grep -v -i "genesis\|megadrive\|32x\|sega\|gameboy\|gba\|advance\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             fi
@@ -795,7 +1146,7 @@ download_all_roms() {
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             else
                 # Otherwise, use all ROMs and just exclude obvious non-SNES ones
-                mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
                 grep -v -i "genesis\|megadrive\|32x\|sega\|gameboy\|gba\|advance\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             fi
@@ -813,7 +1164,7 @@ download_all_roms() {
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             else
                 # Otherwise, use all ROMs and just exclude obvious non-Genesis ones
-                mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
                 grep -v -i "nintendo\|nes\|snes\|famicom\|mario\|zelda\|gameboy\|gba\|advance\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             fi
@@ -831,7 +1182,7 @@ download_all_roms() {
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             else
                 # Otherwise, use all ROMs and just exclude obvious non-GB ones
-                mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
                 grep -v -i "genesis\|megadrive\|32x\|sega\|advance\|gba\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             fi
@@ -846,7 +1197,7 @@ download_all_roms() {
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             else
                 # Otherwise, use all ROMs and just exclude obvious non-GBA ones
-                mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
                 grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             fi
@@ -861,7 +1212,7 @@ download_all_roms() {
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             else
                 # Otherwise, use all ROMs and just exclude obvious non-GG ones
-                mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
                 grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             fi
@@ -876,7 +1227,7 @@ download_all_roms() {
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             else
                 # Otherwise, use all ROMs and just exclude obvious non-NGP ones
-                mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
                 grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             fi
@@ -891,8 +1242,38 @@ download_all_roms() {
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             else
                 # Otherwise, use all ROMs and just exclude obvious non-SMS ones
-                mv "${TEMP_FILE}.all" "$TEMP_FILE"
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
                 grep -v -i "genesis\|megadrive\|32x\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox\|gameboy\|gba\|advance" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
+                mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
+            fi
+            ;;
+        "gbc")
+            # Try to find GBC-specific ROMs
+            grep -i "gameboy\|color\|gbc" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
+            
+            # If we found a good number of GBC ROMs, use those
+            local gbc_count=$(wc -l < "${TEMP_FILE}.filtered")
+            if [ "$gbc_count" -gt 50 ]; then
+                mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
+            else
+                # Otherwise, use all ROMs and just exclude obvious non-GBC ones
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
+                grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|playstation\|ps1\|ps2\|xbox\|advance\|gba" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
+                mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
+            fi
+            ;;
+        "ps1")
+            # Try to find PS1-specific ROMs
+            grep -i "playstation\|ps1\|psx" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
+            
+            # If we found a good number of PS1 ROMs, use those
+            local ps1_count=$(wc -l < "${TEMP_FILE}.filtered")
+            if [ "$ps1_count" -gt 50 ]; then
+                mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
+            else
+                # Otherwise, use all ROMs and just exclude obvious non-PS1 ones
+                cp "${TEMP_FILE}.all" "$TEMP_FILE"
+                grep -v -i "genesis\|megadrive\|32x\|sega\|nes\|snes\|nintendo\|gameboy\|gba\|advance\|xbox\|ps2" "$TEMP_FILE" > "${TEMP_FILE}.filtered"
                 mv "${TEMP_FILE}.filtered" "$TEMP_FILE"
             fi
             ;;
@@ -915,8 +1296,16 @@ download_all_roms() {
         echo "Trying alternative approach..."
         
         # Alternative approach: get all zip files and rely on user to select the right ones
-        curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
-        sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+        if [ "$platform" = "gbc" ]; then
+            curl -s "$archive_url/" | grep -o '<a href="[^"]*\.gbc">' | 
+            sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+        elif [ "$platform" = "ps1" ]; then
+            curl -s "$archive_url/" | grep -o '<a href="[^"]*\.cue">' | 
+            sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+        else
+            curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
+            sed 's/<a href="\([^"]*\)">/\1/' > "$TEMP_FILE"
+        fi
         
         # Decode URL-encoded filenames
         > "${TEMP_FILE}.decoded"
@@ -1095,6 +1484,138 @@ verify_rom_directories() {
         echo " Master System directory created: $sms_dir"
     fi
     
+    # Check GBC directory
+    local gbc_dir=$(get_platform_dir "gbc")
+    if [ -d "$gbc_dir" ]; then
+        local gbc_count=$(find "$gbc_dir" -type f | wc -l)
+        echo " Game Boy Color directory exists: $gbc_dir (Contains $gbc_count files)"
+    else
+        echo " Game Boy Color directory does not exist: $gbc_dir"
+        echo "Creating Game Boy Color directory..."
+        mkdir -p "$gbc_dir"
+        echo " Game Boy Color directory created: $gbc_dir"
+    fi
+    
+    # Check Sega CD directory
+    local segacd_dir=$(get_platform_dir "segacd")
+    if [ -d "$segacd_dir" ]; then
+        local segacd_count=$(find "$segacd_dir" -type f | wc -l)
+        echo " Sega CD directory exists: $segacd_dir (Contains $segacd_count files)"
+    else
+        echo " Sega CD directory does not exist: $segacd_dir"
+        echo "Creating Sega CD directory..."
+        mkdir -p "$segacd_dir"
+        echo " Sega CD directory created: $segacd_dir"
+    fi
+    
+    # Check Sega 32X directory
+    local sega32x_dir=$(get_platform_dir "sega32x")
+    if [ -d "$sega32x_dir" ]; then
+        local sega32x_count=$(find "$sega32x_dir" -type f | wc -l)
+        echo " Sega 32X directory exists: $sega32x_dir (Contains $sega32x_count files)"
+    else
+        echo " Sega 32X directory does not exist: $sega32x_dir"
+        echo "Creating Sega 32X directory..."
+        mkdir -p "$sega32x_dir"
+        echo " Sega 32X directory created: $sega32x_dir"
+    fi
+    
+    # Check Saturn directory
+    local saturn_dir=$(get_platform_dir "saturn")
+    if [ -d "$saturn_dir" ]; then
+        local saturn_count=$(find "$saturn_dir" -type f | wc -l)
+        echo " Saturn directory exists: $saturn_dir (Contains $saturn_count files)"
+    else
+        echo " Saturn directory does not exist: $saturn_dir"
+        echo "Creating Saturn directory..."
+        mkdir -p "$saturn_dir"
+        echo " Saturn directory created: $saturn_dir"
+    fi
+    
+    # Check TurboGrafx-16 directory
+    local tg16_dir=$(get_platform_dir "tg16")
+    if [ -d "$tg16_dir" ]; then
+        local tg16_count=$(find "$tg16_dir" -type f | wc -l)
+        echo " TurboGrafx-16 directory exists: $tg16_dir (Contains $tg16_count files)"
+    else
+        echo " TurboGrafx-16 directory does not exist: $tg16_dir"
+        echo "Creating TurboGrafx-16 directory..."
+        mkdir -p "$tg16_dir"
+        echo " TurboGrafx-16 directory created: $tg16_dir"
+    fi
+    
+    # Check TurboGrafx-CD directory
+    local tgcd_dir=$(get_platform_dir "tgcd")
+    if [ -d "$tgcd_dir" ]; then
+        local tgcd_count=$(find "$tgcd_dir" -type f | wc -l)
+        echo " TurboGrafx-CD directory exists: $tgcd_dir (Contains $tgcd_count files)"
+    else
+        echo " TurboGrafx-CD directory does not exist: $tgcd_dir"
+        echo "Creating TurboGrafx-CD directory..."
+        mkdir -p "$tgcd_dir"
+        echo " TurboGrafx-CD directory created: $tgcd_dir"
+    fi
+    
+    # Check PlayStation directory
+    local ps1_dir=$(get_platform_dir "ps1")
+    if [ -d "$ps1_dir" ]; then
+        local ps1_count=$(find "$ps1_dir" -type f | wc -l)
+        echo " PlayStation directory exists: $ps1_dir (Contains $ps1_count files)"
+    else
+        echo " PlayStation directory does not exist: $ps1_dir"
+        echo "Creating PlayStation directory..."
+        mkdir -p "$ps1_dir"
+        echo " PlayStation directory created: $ps1_dir"
+    fi
+    
+    # Check PlayStation 2 directory
+    local ps2_dir=$(get_platform_dir "ps2")
+    if [ -d "$ps2_dir" ]; then
+        local ps2_count=$(find "$ps2_dir" -type f | wc -l)
+        echo " PlayStation 2 directory exists: $ps2_dir (Contains $ps2_count files)"
+    else
+        echo " PlayStation 2 directory does not exist: $ps2_dir"
+        echo "Creating PlayStation 2 directory..."
+        mkdir -p "$ps2_dir"
+        echo " PlayStation 2 directory created: $ps2_dir"
+    fi
+    
+    # Check Nintendo 64 directory
+    local n64_dir=$(get_platform_dir "n64")
+    if [ -d "$n64_dir" ]; then
+        local n64_count=$(find "$n64_dir" -type f | wc -l)
+        echo " Nintendo 64 directory exists: $n64_dir (Contains $n64_count files)"
+    else
+        echo " Nintendo 64 directory does not exist: $n64_dir"
+        echo "Creating Nintendo 64 directory..."
+        mkdir -p "$n64_dir"
+        echo " Nintendo 64 directory created: $n64_dir"
+    fi
+    
+    # Check Dreamcast directory
+    local dreamcast_dir=$(get_platform_dir "dreamcast")
+    if [ -d "$dreamcast_dir" ]; then
+        local dreamcast_count=$(find "$dreamcast_dir" -type f | wc -l)
+        echo " Dreamcast directory exists: $dreamcast_dir (Contains $dreamcast_count files)"
+    else
+        echo " Dreamcast directory does not exist: $dreamcast_dir"
+        echo "Creating Dreamcast directory..."
+        mkdir -p "$dreamcast_dir"
+        echo " Dreamcast directory created: $dreamcast_dir"
+    fi
+    
+    # Check Lynx directory
+    local lynx_dir=$(get_platform_dir "lynx")
+    if [ -d "$lynx_dir" ]; then
+        local lynx_count=$(find "$lynx_dir" -type f | wc -l)
+        echo " Lynx directory exists: $lynx_dir (Contains $lynx_count files)"
+    else
+        echo " Lynx directory does not exist: $lynx_dir"
+        echo "Creating Lynx directory..."
+        mkdir -p "$lynx_dir"
+        echo " Lynx directory created: $lynx_dir"
+    fi
+    
     echo "ROM directory verification complete."
     read -p "Press Enter to continue..."
 }
@@ -1104,8 +1625,8 @@ test_archive_urls() {
     clear
     echo "===== Testing Archive URLs ====="
     
-    for platform in "${!ARCHIVE_URLS[@]}"; do
-        local archive_url="${ARCHIVE_URLS[$platform]}"
+    for platform in "nes" "snes" "gb" "gba" "gbc" "sms" "genesis" "segacd" "sega32x" "saturn" "gg" "ngp" "tg16" "tgcd" "ps1" "ps2" "n64" "dreamcast" "lynx"; do
+        local archive_url=$(get_archive_url "$platform")
         
         echo "Testing $(to_uppercase $platform) URL: $archive_url"
         local http_code=$(curl -s -o /dev/null -w "%{http_code}" "$archive_url")
