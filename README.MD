@@ -2,18 +2,6 @@
 
 Retrom is a shell script utility designed to help you manage and download retro game ROMs from Internet Archive collections, obviously you'll need to update your links yourself due to legal reasons.
 
-## Features
-
-- **Interactive Menu System**: Easy-to-use interface for managing your ROM collection
-- **Smart Directory Management**: Checks if the default ROM directory exists and offers to create it
-- **Multi-Platform Support**: Download ROMs for a wide variety of retro gaming platforms
-- **Flexible ROM Storage**: Customize where your ROMs are stored or use the default location
-- **Search Functionality**: Find specific ROMs across all supported platforms
-- **Bulk Downloads**: Download entire ROM collections for any supported platform
-- **Directory Verification**: Ensure all ROM directories are properly set up
-- **Archive URL Testing**: Verify that all Internet Archive sources are accessible
-- **External Storage Support**: Copy your ROM collection to external drives
-
 ## Usage
 
 1. Make the script executable:
@@ -68,6 +56,19 @@ When you run the script:
 - Internet connection
 - Sufficient disk space for ROM storage
 - rsync (optional, for improved ROM copying functionality)
+
+## Features
+
+- **Interactive Menu System**: Easy-to-use interface for managing your ROM collection
+- **Smart Directory Management**: Checks if the default ROM directory exists and offers to create it
+- **Multi-Platform Support**: Download ROMs for a wide variety of retro gaming platforms
+- **Flexible ROM Storage**: Customize where your ROMs are stored or use the default location
+- **Search Functionality**: Find specific ROMs across all supported platforms
+- **Bulk Downloads**: Download entire ROM collections for any supported platform
+- **Directory Verification**: Ensure all ROM directories are properly set up
+- **Archive URL Testing**: Verify that all Internet Archive sources are accessible
+- **External Storage Support**: Copy your ROM collection to external drives
+
 
 ## Legal Notice
 
