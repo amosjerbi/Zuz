@@ -29,7 +29,7 @@ By default, ROMs are stored in
    ```
 Alternatively, the script will ask you if you want another target location. Like in Rocknix for example:
    ```
-`/Volumes/games-roms/`
+`/Volumes/games-roms/`.
    ```
 
 you can also customize the location by setting the `ROMS_BASE_DIR` variable in the script.
@@ -77,6 +77,32 @@ you can also customize the location by setting the `ROMS_BASE_DIR` variable in t
 - **Directory Verification**: Ensure all ROM directories are properly set up
 - **Archive URL Testing**: Verify that all Internet Archive sources are accessible
 - **External Storage Support**: Copy your ROM collection to external drives
+- **Selection and Highlighting**: Ability to highlight and select items for better visual feedback and interaction
+
+## Credits and Resources
+
+The following resources and references were used in the development of this project:
+
+- Internet Archive Collections:
+  - NES Collection: https://archive.org/download/nes-collection
+  - SNES Collection: https://archive.org/download/SuperNintendofull_rom_pack
+  - Genesis Collection: https://archive.org/download/sega-genesis-romset-ultra-usa
+  - Game Boy Collection: https://archive.org/download/GameBoy-Romset-by-LoLLo
+  - Game Boy Advance Collection: https://archive.org/download/GameboyAdvanceRomCollectionByGhostware
+  - Game Boy Color Collection: https://archive.org/download/GameBoyColor
+  - Game Gear Collection: https://archive.org/download/sega-game-gear-romset-ultra-us
+  - Neo Geo Pocket Collection: https://archive.org/download/neogeopocketromcollectionmm1000
+  - Master System Collection: https://archive.org/download/sega-master-system-romset-ultra-us
+  - Sega CD Collection: https://archive.org/download/cylums-sega-cd-rom-collection
+  - Sega 32X Collection: https://archive.org/download/cylums-sega-32-x-rom-collection
+  - Saturn Collection: https://archive.org/download/sega-saturn-romset
+  - TurboGrafx-16 Collection: https://archive.org/download/cylums-turbo-grafx-16-rom-collection
+  - TurboGrafx-CD Collection: https://archive.org/download/redump.nec_pcecd-tgcd
+  - PlayStation Collection: https://archive.org/download/Centuron-PSX
+  - PlayStation 2 Collection: https://archive.org/download/asurah94ps2_202405
+  - Nintendo 64 Collection: https://archive.org/download/unrenamed-consoles-n64
+  - Dreamcast Collection: https://archive.org/download/sega-dreamcast-romset
+  - Atari Lynx Collection: https://archive.org/download/AtariLynxRomCollectionByGhostware
 
 
 ## Legal Notice
