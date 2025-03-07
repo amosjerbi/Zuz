@@ -23,9 +23,9 @@ Version 2 introduces significant new features:
    ./Retrom_v2.sh
    ```
    
-   You can also specify a custom ROM directory:
+   You can also specify a custom ROM directory (on your desktop for example):
    ```
-   ./Retrom_v2.sh /path/to/custom/directory
+   DEFAULT_ROMS_BASE_DIR="$HOME/Desktop/$(whoami)/games-roms"
    ```
 
 3. Follow the interactive prompts to manage your ROM collection
