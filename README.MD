@@ -2,16 +2,30 @@
 
 Retrom is a shell script utility designed to help you manage and download retro game ROMs from Internet Archive collections, obviously you'll need to update your links yourself due to legal reasons.
 
+## Version 2 Updates
+
+Version 2 introduces significant new features:
+
+- **SMB Network Support**: Connect to SMB shares on your local network to access ROMs
+- **Multi-OS Compatibility**: Optimized SMB mounting for MacOS, Windows, and Linux servers
+- **Network Auto-Discovery**: Automatic scanning for SMB servers on your local network
+- **Improved Directory Management**: Enhanced handling of ROM directories with network support
+
 ## Usage
 
 1. Make the script executable:
    ```
-   chmod +x Retrom_for_rocknix_v1.sh
+   chmod +x Retrom_v2.sh
    ```
 
 2. Run the script:
    ```
-   ./Retrom_v1.sh
+   ./Retrom_v2.sh
+   ```
+   
+   You can also specify a custom ROM directory:
+   ```
+   ./Retrom_v2.sh /path/to/custom/directory
    ```
 
 3. Follow the interactive prompts to manage your ROM collection
@@ -25,14 +39,13 @@ When you run the script:
 
 By default, ROMs are stored in
    ```
-`$HOME/Desktop/$(whoami)/games-roms/`
-   ```
-Alternatively, the script will ask you if you want another target location. Like in Rocknix for example:
-   ```
-`/Volumes/games-roms/`.
+   $HOME/smb-mount/games-roms/
    ```
 
-you can also customize the location by setting the `ROMS_BASE_DIR` variable in the script.
+You can also customize the location by:
+1. Setting the `ROMS_BASE_DIR` variable in the script
+2. Passing a directory path as a command-line argument
+3. Connecting to an SMB share that contains your ROMs
 
 ## Supported Platforms
 
@@ -78,6 +91,11 @@ you can also customize the location by setting the `ROMS_BASE_DIR` variable in t
 - **Archive URL Testing**: Verify that all Internet Archive sources are accessible
 - **External Storage Support**: Copy your ROM collection to external drives
 - **Selection and Highlighting**: Ability to highlight and select items for better visual feedback and interaction
+- **Network SMB Support**: Connect to SMB shares on your local network
+- **Auto-Discovery**: Automatically scan and find SMB servers on your network
+- **Multi-OS Compatibility**: Optimized mounting for MacOS, Windows, and Linux SMB servers
+- **Smart Mount Options**: Different mounting strategies based on server OS type
+- **Network Resilience**: Multiple fallback options for connecting to SMB shares
 
 ## Credits and Resources
 
