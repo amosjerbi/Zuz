@@ -1295,6 +1295,10 @@ search_roms() {
         # Download the ROM immediately
         download_rom "$selected_rom" "$platform"
         
+        # Automatically open the ROMs folder
+        echo "\nOpening ROMs folder..."
+        open_roms_folder
+        
         # Brief pause to let user see the download completed
         sleep 1
         
