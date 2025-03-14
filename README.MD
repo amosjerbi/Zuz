@@ -1,6 +1,6 @@
 # Retrom - Retro Game ROM Manager
 
-Retrom is a shell script utility designed to help you manage and download retro game ROMs, obviously you'll need to update your links yourself due to legal reasons it's pretty straight forward. :)
+Retrom is a shell script utility designed to help you manage and download retro game ROMs, obviously you'll need to update your links yourself due to legal reasons it's pretty straight forward. When you use Android version the rom (link provided by yourself) will be downloaded to device and then transferred to rocknix if such is available (change the IP if needed in code).
 
 ## Version 2 Updates
 
@@ -15,12 +15,17 @@ Version 2 introduces significant new features:
 
 1. Make the script executable:
    ```
-   chmod +x Retrom_v2.sh
+   chmod +x retrom_mac.sh
+   chmod +x retrom_android.sh
+   ```
+2. Run the script on macOS (drag to Terminal):
+   ```
+   ./retrom_mac.sh
    ```
 
-2. Run the script:
+2. Run the script on Termux (Android):
    ```
-   ./Retrom_v2.sh
+   bash retrom_android.sh
    ```
    
    You can also specify a custom ROM directory (on your desktop for example):
