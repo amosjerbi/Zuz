@@ -1,13 +1,13 @@
 # Retrom - Retro Game ROM Manager
 
-Retrom is a shell script utility designed to help you manage and download retro game ROMs from Internet Archive collections, obviously you'll need to update your links yourself due to legal reasons.
+Retrom is a shell script utility designed to help you manage and download retro game ROMs, obviously you'll need to update your links yourself due to legal reasons it's pretty straight forward. :)
 
 ## Version 2 Updates
 
 Version 2 introduces significant new features:
 
 - **SMB Network Support**: Connect to SMB shares on your local network to access ROMs
-- **Multi-OS Compatibility**: Optimized SMB mounting for MacOS, Windows, and Linux servers
+- **Multi-OS Compatibility**: Optimized SMB mounting for MacOS, Windows, and Linux servers & Android
 - **Network Auto-Discovery**: Automatic scanning for SMB servers on your local network
 - **Improved Directory Management**: Enhanced handling of ROM directories with network support
 
@@ -97,32 +97,7 @@ You can also customize the location by:
 - **Smart Mount Options**: Different mounting strategies based on server OS type
 - **Network Resilience**: Multiple fallback options for connecting to SMB shares
 
-## Credits and Resources
-
-The following resources and references were used in the development of this project:
-
-- Internet Archive Collections:
-  - NES Collection: https://archive.org/download/nes-collection
-  - SNES Collection: https://archive.org/download/SuperNintendofull_rom_pack
-  - Genesis Collection: https://archive.org/download/sega-genesis-romset-ultra-usa
-  - Game Boy Collection: https://archive.org/download/GameBoy-Romset-by-LoLLo
-  - Game Boy Advance Collection: https://archive.org/download/GameboyAdvanceRomCollectionByGhostware
-  - Game Boy Color Collection: https://archive.org/download/GameBoyColor
-  - Game Gear Collection: https://archive.org/download/sega-game-gear-romset-ultra-us
-  - Neo Geo Pocket Collection: https://archive.org/download/neogeopocketromcollectionmm1000
-  - Master System Collection: https://archive.org/download/sega-master-system-romset-ultra-us
-  - Sega CD Collection: https://archive.org/download/cylums-sega-cd-rom-collection
-  - Sega 32X Collection: https://archive.org/download/cylums-sega-32-x-rom-collection
-  - Saturn Collection: https://archive.org/download/sega-saturn-romset
-  - TurboGrafx-16 Collection: https://archive.org/download/cylums-turbo-grafx-16-rom-collection
-  - TurboGrafx-CD Collection: https://archive.org/download/redump.nec_pcecd-tgcd
-  - PlayStation Collection: https://archive.org/download/Centuron-PSX
-  - PlayStation 2 Collection: https://archive.org/download/asurah94ps2_202405
-  - Nintendo 64 Collection: https://archive.org/download/unrenamed-consoles-n64
-  - Dreamcast Collection: https://archive.org/download/sega-dreamcast-romset
-  - Atari Lynx Collection: https://archive.org/download/AtariLynxRomCollectionByGhostware
-
 
 ## Legal Notice
 
-This script is provided for educational purposes only. Users are responsible for ensuring they have the legal right to download and use any ROMs obtained through this script. The authors do not host or distribute ROMs and are not responsible for the content available through Internet Archive links.
+This script is provided for educational purposes only. Users are responsible for ensuring they have the legal right to download and use any ROMs obtained through this script. The authors do not host or distribute ROMs and are not responsible for the content users inject to code.
