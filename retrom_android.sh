@@ -3,7 +3,7 @@
 # Set variables
 CURRENT_PLATFORM=""
 ROMS_ROOT="games-internal/roms"  # Local storage path
-ROCKNIX_HOST="192.168.0.132"
+ROCKNIX_HOST="192.168.0.1"
 ROCKNIX_USER="root"
 ROCKNIX_PASS="rocknix"  # RockNix password
 ROCKNIX_ROMS_PATH="/storage/roms"  # RockNix storage path
