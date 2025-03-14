@@ -45,61 +45,61 @@ get_archive_url() {
     
     case "$platform" in
         "nes")
-            echo "https://archive.org/download/nes-collection"
+            echo "PUT_LINK_HERE"
             ;;
         "snes")
-            echo "https://archive.org/download/SuperNintendofull_rom_pack"
+            echo "PUT_LINK_HERE"
             ;;
         "genesis")
-            echo "https://archive.org/download/sega-genesis-romset-ultra-usa"
+            echo "PUT_LINK_HERE"
             ;;
         "gb")
-            echo "https://archive.org/download/GameBoy-Romset-by-LoLLo"
+            echo "PUT_LINK_HERE"
             ;;
         "gba")
-            echo "https://archive.org/download/GameboyAdvanceRomCollectionByGhostware"
+            echo "PUT_LINK_HERE"
             ;;
         "gbc")
-            echo "https://archive.org/download/GameBoyColor"
+            echo "PUT_LINK_HERE"
             ;;
         "gg")
-            echo "https://archive.org/download/sega-game-gear-romset-ultra-us"
+            echo "PUT_LINK_HERE"
             ;;
         "ngp")
-            echo "https://archive.org/download/neogeopocketromcollectionmm1000"
+            echo "PUT_LINK_HERE"
             ;;
         "sms")
-            echo "https://archive.org/download/sega-master-system-romset-ultra-us"
+            echo "PUT_LINK_HERE"
             ;;
         "segacd")
-            echo "https://archive.org/download/cylums-sega-cd-rom-collection/Cylum%27s%20Sega%20CD%20ROM%20Collection%20%2802-19-2021%29/"
+            echo "PUT_LINK_HERE"
             ;;
         "sega32x")
-            echo "https://ia903400.us.archive.org/view_archive.php?archive=/30/items/cylums-sega-32-x-rom-collection/Cylum%27s%20Sega%2032X%20ROM%20Collection%20%2802-14-2021%29.zip"
+            echo "PUT_LINK_HERE"
             ;;
         "saturn")
-            echo "https://archive.org/download/sega-saturn-romset"
+            echo "PUT_LINK_HERE"
             ;;
         "tg16")
-            echo "https://ia903409.us.archive.org/view_archive.php?archive=/0/items/cylums-turbo-grafx-16-rom-collection/Cylum%27s%20TurboGrafx-16%20ROM%20Collection%20%2802-14-2021%29.zip"
+            echo "PUT_LINK_HERE"
             ;;
         "tgcd")
-            echo "https://archive.org/download/redump.nec_pcecd-tgcd"
+            echo "PUT_LINK_HERE"
             ;;
         "ps1")
-            echo "https://archive.org/download/Centuron-PSX"
+            echo "PUT_LINK_HERE"
             ;;
         "ps2")
-            echo "https://archive.org/download/asurah94ps2_202405"
+            echo "PUT_LINK_HERE"
             ;;
         "n64")
-            echo "https://archive.org/download/unrenamed-consoles-n64/UnRenamed%20Consoles%20-%20NINTENDO-N64/"
+            echo "PUT_LINK_HERE"
             ;;
         "dreamcast")
-            echo "https://archive.org/download/sega-dreamcast-romset"
+            echo "PUT_LINK_HERE"
             ;;
         "lynx")
-            echo "https://archive.org/download/AtariLynxRomCollectionByGhostware"
+            echo "PUT_LINK_HERE"
             ;;
         *)
             echo ""
