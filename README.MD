@@ -93,7 +93,6 @@ You can also customize the location by:
 - **Search Functionality**: Find specific ROMs across all supported platforms
 - **Bulk Downloads**: Download entire ROM collections for any supported platform
 - **Directory Verification**: Ensure all ROM directories are properly set up
-- **Archive URL Testing**: Verify that all Internet Archive sources are accessible
 - **External Storage Support**: Copy your ROM collection to external drives
 - **Selection and Highlighting**: Ability to highlight and select items for better visual feedback and interaction
 - **Network SMB Support**: Connect to SMB shares on your local network
