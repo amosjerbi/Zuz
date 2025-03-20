@@ -13,22 +13,31 @@ Version 3 introduces significant new features:
 - **Network Auto-Discovery**: Automatic scanning for SMB servers on your local network
 - **Improved Directory Management**: Enhanced handling of ROM directories with network support
 
-## Usage
+## Before you run scripts
+Check the links, you'll need the right archive directories
+
+## Usage on Mac
 
 1. Make the script executable:
    ```
-   chmod +x retrom_mac.sh
-   chmod +x retrom_android.sh
+   chmod +x lakka_mac.sh (if it's for Lakka)
+   chmod +x rocknix_mac.sh (if it's for Rocknix)
    ```
 2. Run the script on macOS (drag to Terminal):
    ```
-   ./retrom_mac.sh
+   ./rocknix_mac.sh
+   ./lakka_mac.sh
    ```
+## Usage on Android
 
-2. Run the script on Termux (Android):
+1. Download Termux
+2. Open lakka_mac.sh or rocknix_mac.sh on Termux
+3. Run the script on Termux (Android):
    ```
-   bash retrom_android.sh
+   bash rocknix_android.sh
+   bash lakka_android.sh
    ```
+4. All the platforms will be listed
    
    You can also specify a custom ROM directory (on your desktop for example):
    ```
