@@ -4,8 +4,10 @@ Retrom is a shell script utility designed to help you manage and download retro 
 
 ## Version 2 Updates
 
-Version 2 introduces significant new features:
+Version 3 introduces significant new features:
 
+- **Modified Menu**: All platforms are shown first and misc option are in 'More'
+- **Links**: The root of the link is the same to all (archive.org) but haven't specified directories, that on you to fill in :)
 - **SMB Network Support**: Connect to SMB shares on your local network to access ROMs
 - **Multi-OS Compatibility**: Optimized SMB mounting for MacOS, Windows, and Linux servers & Android
 - **Network Auto-Discovery**: Automatic scanning for SMB servers on your local network
