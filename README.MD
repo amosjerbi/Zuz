@@ -14,7 +14,7 @@ Version 3 introduces significant new features:
 - **Improved Directory Management**: Enhanced handling of ROM directories with network support
 
 ## Before you run scripts
-Check the links, you'll need the right archive directories
+Check the links, you'll need the right archive.org directories
 
 ## Usage on Mac
 
