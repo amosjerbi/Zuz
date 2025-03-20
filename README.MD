@@ -14,14 +14,25 @@ Version 3 introduces significant new features:
 - **Improved Directory Management**: Enhanced handling of ROM directories with network support
 
 ## Before you run scripts
-Check the links, you'll need the right archive.org directories
+
+Check the links, you'll need the right archive.org directories:
+```
+lakka_android.sh - Run this on Android and it'll copy roms TO Lakka 
+rocknix_android.sh - Run this on Android and it'll copy roms TO Rocknix
+```
+
+```
+lakka_mac.sh - Drag to terminal window on macOS and it'll copy TO Lakka 
+rocknix_mac.sh - Drag to terminal window on macOS and it'll copy TO Rocknix
+```
+
 
 ## Usage on Mac
 
 1. Make the script executable:
    ```
-   chmod +x lakka_mac.sh (if it's for Lakka)
-   chmod +x rocknix_mac.sh (if it's for Rocknix)
+   chmod +x lakka_mac.sh
+   chmod +x rocknix_mac.sh
    ```
 2. Run the script on macOS (drag to Terminal):
    ```
@@ -43,8 +54,6 @@ Check the links, you'll need the right archive.org directories
    ```
    DEFAULT_ROMS_BASE_DIR="$HOME/Desktop/$(whoami)/games-roms"
    ```
-
-3. Follow the interactive prompts to manage your ROM collection
 
 ## Default ROM Directory
 
