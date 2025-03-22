@@ -1,12 +1,12 @@
-# Retrom - Retro Game ROM Manager
+# Zuz - Move your roms from Phone & macOS to handhelds
 
-Retrom is a shell script utility designed to help you manage and download retro game ROMs, obviously you'll need to update your links yourself due to legal reasons it's pretty straight forward. When you use Android version the rom (link provided by yourself) will be downloaded to device and then transferred to rocknix if such is available (change the IP if needed in code).
+Zuz (means move in Hebrew) is a shell script utility designed to help you download game ROMs, obviously you'll need to update your links yourself due to legal reasons. When you use Android version the rom (link provided by yourself) will be downloaded to android and then transferred to rocknix/Lakka if such is available.
 
-## Version 2 Updates
+## Version 3 Features:
 
-Version 3 introduces significant new features:
-
-- **Modified Menu**: All platforms are shown first and options like open directory and SMB are in 'More'
+- **Dynamic IP addresses**: Go to '19.More Options'->' 1. Connect to SMB'->'1. Scan for SMB hosts' Which will scan your active IPs
+- **Multiple transfers**: Transfer in one click the same game to multiple devices (If SMB IP were detected)
+- **Modified Menu**: All platforms are shown first and options like open directory and SMB are in 'More Options'
 - **Links**: The root of the link is the same to all (archive.org) but haven't specified directories, that on you to fill in :)
 - **SMB Network Support**: Connect to SMB shares on your local network to access ROMs
 - **Multi-OS Compatibility**: Optimized SMB mounting for MacOS, Windows, and Linux servers & Android
@@ -72,7 +72,7 @@ You can also customize the location by:
 2. Passing a directory path as a command-line argument
 3. Connecting to an SMB share that contains your ROMs
 
-## Supported Platforms
+## Supported Platforms (I don't provide ROM links this one is on you!)
 
 | Platform | ROM Directory | Description |
 |----------|--------------|----------------|
@@ -99,28 +99,9 @@ You can also customize the location by:
 ## Requirements
 
 - Bash shell
-- curl (for downloading ROMs)
+- Termux - An app for Android (available for free on Play Store) 
 - Internet connection
-- Sufficient disk space for ROM storage
-- rsync (optional, for improved ROM copying functionality)
-
-## Features
-
-- **Interactive Menu System**: Easy-to-use interface for managing your ROM collection
-- **Smart Directory Management**: Checks if the default ROM directory exists and offers to create it
-- **Multi-Platform Support**: Download ROMs for a wide variety of retro gaming platforms
-- **Flexible ROM Storage**: Customize where your ROMs are stored or use the default location
-- **Search Functionality**: Find specific ROMs across all supported platforms
-- **Bulk Downloads**: Download entire ROM collections for any supported platform
-- **Directory Verification**: Ensure all ROM directories are properly set up
-- **External Storage Support**: Copy your ROM collection to external drives
-- **Selection and Highlighting**: Ability to highlight and select items for better visual feedback and interaction
-- **Network SMB Support**: Connect to SMB shares on your local network
-- **Auto-Discovery**: Automatically scan and find SMB servers on your network
-- **Multi-OS Compatibility**: Optimized mounting for MacOS, Windows, and Linux SMB servers
-- **Smart Mount Options**: Different mounting strategies based on server OS type
-- **Network Resilience**: Multiple fallback options for connecting to SMB shares
-
+- Sufficient disk space
 
 ## Legal Notice
 
