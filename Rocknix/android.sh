@@ -2,13 +2,12 @@
 
 # Set variables
 CURRENT_PLATFORM=""
-ROMS_ROOT="$HOME/Aroms"  # Local ROMs folder
-ROCKNIX_HOST="192.168.0.132"
+# ROMS_ROOT="games-internal/roms"  # RockNix local storage path
+ROMS_ROOT="/storage/emulated/0/Download/roms"  # Android Download ROMs folder
 ROCKNIX_USER="root"
 ROCKNIX_PASS="rocknix"  # Correct RockNix password
-ROCKNIX_ROMS_PATH="/storage/roms"  # Primary RockNix storage path
-ROCKNIX_GAMES_INTERNAL="/storage/games-internal/roms"  # Secondary RockNix storage path
-ROCKNIX_ANDROID_PATH="/storage/emulated/0/Download/roms"  # Android Download directory path
+ROCKNIX_ROMS_PATH="/storage/roms"  # RockNix storage path
+DETECTED_SMB_HOSTS=()  # Array to store detected SMB hosts
 
 # Platform-specific directories using the base variable
 NES_DIR="$ROMS_ROOT/nes"
@@ -29,8 +28,8 @@ PS1_DIR="$ROMS_ROOT/psx"
 PS2_DIR="$ROMS_ROOT/ps2"
 N64_DIR="$ROMS_ROOT/n64"
 LYNX_DIR="$ROMS_ROOT/lynx"
-TEMP_FILE="/tmp/rom_list.txt"
-SMB_MOUNT_DIR="$HOME/smb-mount/Volumes"
+TEMP_FILE="/storage/emulated/0/Download/temp_rom_list.txt"
+SMB_MOUNT_DIR="storage/roms"
 
 # Function to decode URL-encoded strings
 urldecode() {
@@ -48,7 +47,7 @@ get_archive_url() {
     local platform="$1"
     local base_url="https://archive.org/download"
     
-     # Map platform to archive URL
+  # Map platform to archive URL
     case "$platform" in
         "nes") echo "$base_url/PUT_DIRECTORY_HERE";;
         "snes") echo "$base_url/PUT_DIRECTORY_HERE";;
@@ -75,7 +74,7 @@ get_archive_url() {
 # Function to get platform directory
 get_platform_dir() {
     local platform="$1"
-    local base_dir="$HOME/Aroms"  # Local ROMs folder
+    local base_dir="$HOME/Desktop/Aroms"  # Mac Desktop ROMs folder
     
     # Map platform name to directory name
     case "$platform" in
@@ -177,7 +176,7 @@ menu_select() {
     local selected=0
     local key
 
-    # Function to draw menu
+   # Function to draw menu
     draw_menu() {
         # Clear screen for Android compatibility
         clear
@@ -189,8 +188,6 @@ menu_select() {
                 printf "  %2d. %s\n" $((i+1)) "${options[$i]}"  # With number
             fi
         done
-        
-        # No need to move cursor back up - we'll just clear and redraw the entire menu
     }
 
     # Draw initial menu
@@ -213,15 +210,11 @@ menu_select() {
                 read -rsn1 -t $timeout next_key
             done
             
-            # Convert to integer and check if it's valid
+              # Convert to integer and check if it's valid
             number=$((10#$number))  # Force base 10 interpretation
             
             if [ $number -ge 1 ] && [ $number -le $num_options ]; then
-                tput cnorm  # Show cursor
-                # Move cursor past the menu before returning
-                for ((i=0; i<num_options; i++)); do
-                    tput cud1
-                done
+                # No need for cursor movement on Android
                 echo
                 return $number
             fi
@@ -249,15 +242,7 @@ menu_select() {
                         ;;
                 esac
                 ;;
-            '')  # Enter key
-                tput cnorm  # Show cursor
-                # Move cursor past the menu before returning
-                for ((i=0; i<num_options; i++)); do
-                    tput cud1
-                done
-                echo
-                return $((selected + 1))
-                ;;
+            '') 
         esac
     done
 }
@@ -911,7 +896,7 @@ detect_and_connect_smb() {
             echo "\n❌ Mount failed. The share could not be mounted."
             
             # Check if the server is reachable
-            if ping -c 1 -W 1 "$selected_host" &>/dev/null; then
+            if ping -c 1 -W 1 "$selected_host" &> /dev/null; then
                 echo "✅ Server $selected_host is reachable"
                 
                 # Check if SMB ports are open
@@ -960,6 +945,433 @@ detect_and_connect_smb() {
     
     read -p "Press Enter to continue..."
     return 0
+}
+
+# Function to scan for SMB hosts
+scan_for_smb_hosts() {
+    echo "Scanning for SMB hosts on the network... (Press any key to skip)"
+    
+    # Initialize detected hosts array (empty at start)
+    DETECTED_SMB_HOSTS=()
+    
+    # Get the local IP and subnet - with Android compatibility
+    local ip_addr=""
+    local subnet=""
+    
+    # Detect if we're on Android
+    local is_android=0
+    if [ -f /system/build.prop ] || [ -d /system/app ] || [ -d /system/priv-app ]; then
+        is_android=1
+        # On Android, use ip command instead of ifconfig
+        # First try to get the wlan0 IP directly with a simpler command
+        ip_addr=$(ip -4 addr show wlan0 2>/dev/null | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | head -1)
+        
+        # If that fails, try alternative methods
+        if [ -z "$ip_addr" ]; then
+            # Try getprop
+            ip_addr=$(getprop dhcp.wlan0.ipaddress)
+        fi
+        
+        # If still empty, try the more complex parsing
+        if [ -z "$ip_addr" ]; then
+            local ip_info=$(ip addr show 2>/dev/null | grep "inet " | grep -v "127.0.0.1")
+            ip_addr=$(echo "$ip_info" | grep "wlan0" | head -1 | awk '{print $2}' | cut -d/ -f1)
+            
+            # If wlan0 not found, try the first non-loopback interface
+            if [ -z "$ip_addr" ]; then
+                ip_addr=$(echo "$ip_info" | head -1 | awk '{print $2}' | cut -d/ -f1)
+            fi
+        fi
+    else
+        # On desktop systems, use ifconfig
+        local ip_info=$(ifconfig | grep "inet " | grep -v 127.0.0.1)
+        ip_addr=$(echo "$ip_info" | awk '{print $2}')
+    fi
+    
+    # Fallback to hardcoded subnet if we couldn't detect IP
+    if [ -z "$ip_addr" ]; then
+        echo "⚠️ Could not detect IP address, using default subnet 192.168.0"
+        subnet="192.168.0"
+    else
+        subnet=$(echo "$ip_addr" | cut -d. -f1-3)
+    fi
+    
+    echo "Your IP address: $ip_addr"
+    echo "Scanning subnet: $subnet.x"
+    
+    # Set up to detect key press for skipping (fixed timeout)
+    read -t 1 -n 1 key
+    if [ $? -eq 0 ]; then
+        echo "Scan skipped by user."
+        return 0
+    fi
+    
+    # Perform faster network scanning
+    echo "Scanning network for SMB hosts (quick scan)..."
+    
+    # Define specific IP ranges to scan - focus on common device IPs
+    # This makes scanning much faster while still finding most devices
+    scan_ranges=(
+        # Router and common static IPs
+        "1 10"
+        # Common RockNix and device IPs based on user's setup
+        "130 160"
+    )
+    
+    # Track progress
+    total_to_scan=0
+    for range in "${scan_ranges[@]}"; do
+        start_ip=$(echo $range | cut -d' ' -f1)
+        end_ip=$(echo $range | cut -d' ' -f2)
+        total_to_scan=$((total_to_scan + end_ip - start_ip + 1))
+    done
+    
+    echo "Scanning $total_to_scan IPs in targeted ranges..."
+    
+    # Android-optimized scanning
+    if [ $is_android -eq 1 ]; then
+        echo "Using Android-optimized scanning..."
+        
+        # Direct check for known RockNix host (from memory)
+        echo "Checking known RockNix host: 192.168.0.132"
+        if ping -c 1 -W 1 "192.168.0.132" >/dev/null 2>&1; then
+            echo "✅ 192.168.0.132 is reachable"
+            
+            # Check if port 445 (SMB) is open - Android-compatible syntax
+            if nc -z -w 1 "192.168.0.132" 445 >/dev/null 2>&1; then
+                echo "✅ 192.168.0.132 has SMB service (port 445 open)"
+                DETECTED_SMB_HOSTS+=("192.168.0.132")
+            else
+                echo "❌ 192.168.0.132 does not have SMB service"
+            fi
+        else
+            echo "❌ 192.168.0.132 is not reachable"
+        fi
+        
+        # Sequential scan for Android (no background processes)
+        for range in "${scan_ranges[@]}"; do
+            start_ip=$(echo $range | cut -d' ' -f1)
+            end_ip=$(echo $range | cut -d' ' -f2)
+            
+            echo "Scanning range $subnet.$start_ip to $subnet.$end_ip"
+            for i in $(seq $start_ip $end_ip); do
+                target="$subnet.$i"
+                
+                # Skip if it's the already checked RockNix host
+                if [ "$target" = "192.168.0.132" ]; then
+                    continue
+                fi
+                
+                # Quick ping check
+                if ping -c 1 -W 1 "$target" >/dev/null 2>&1; then
+                    echo -n "Testing $target... "
+                    
+                    # Check if port 445 (SMB) is open - Android-compatible syntax
+                    if nc -z -w 1 "$target" 445 >/dev/null 2>&1; then
+                        echo "SMB service found ✅"
+                        DETECTED_SMB_HOSTS+=("$target")
+                    else
+                        echo "no SMB service ❌"
+                    fi
+                fi
+            done
+        done
+    else
+        # Desktop version with background processes
+        pids=()
+        
+        # Scan each range in parallel
+        for range in "${scan_ranges[@]}"; do
+            start_ip=$(echo $range | cut -d' ' -f1)
+            end_ip=$(echo $range | cut -d' ' -f2)
+            
+            # Scan this range in background
+            (
+                for i in $(seq $start_ip $end_ip); do
+                    target="$subnet.$i"
+                    
+                    # Quick ping check (faster than full port scan)
+                    if ping -c 1 -W 1 "$target" &>/dev/null; then
+                        # Check if port 445 (SMB) is open
+                        if nc -z -w 1 "$target" 445 &>/dev/null; then
+                            # Found an SMB host
+                            DETECTED_SMB_HOSTS+=("$target")
+                        fi
+                    fi
+                done
+            ) &
+            
+            # Store background process ID
+            pids+=($!)
+        done
+        
+        # Wait for all background scans to complete
+        for pid in "${pids[@]}"; do
+            wait $pid
+        done
+    fi
+    
+    # Display results
+    if [ ${#DETECTED_SMB_HOSTS[@]} -gt 0 ]; then
+        echo "✅ Found ${#DETECTED_SMB_HOSTS[@]} SMB hosts:"
+        for i in "${!DETECTED_SMB_HOSTS[@]}"; do
+            echo "   $((i+1)). ${DETECTED_SMB_HOSTS[$i]}"
+        done
+        
+        # Set the first detected host as the current host
+        if [ -z "$ROCKNIX_HOST" ]; then
+            ROCKNIX_HOST="${DETECTED_SMB_HOSTS[0]}"
+            echo "✅ Set current RockNix host to: $ROCKNIX_HOST"
+        fi
+    else
+        echo "❌ No SMB hosts found on the network."
+    fi
+    
+    return 0
+}
+
+# Function to handle ROM transfers to RockNix hosts
+handle_rom_transfer() {
+    local rom_path="$1"
+    local platform="$2"
+    
+    # If no hosts have been detected yet, run a scan first
+    if [ ${#DETECTED_SMB_HOSTS[@]} -eq 0 ]; then
+        echo "No RockNix hosts detected yet. Running a quick scan..."
+        scan_for_smb_hosts
+    fi
+    
+    # Check if we have SMB hosts detected
+    if [ ${#DETECTED_SMB_HOSTS[@]} -gt 0 ]; then
+        # Transfer to all hosts in parallel without asking
+        echo "🔄 Automatically transferring ROM to all detected RockNix hosts (${#DETECTED_SMB_HOSTS[@]} hosts)..."
+        
+        # Array to track transfer processes
+        transfer_pids=()
+        transfer_hosts=()
+        
+        # Determine destination directory
+        local dest_dir="$ROCKNIX_ROMS_PATH/$platform"
+        
+        # Start transfers in background
+        for host in "${DETECTED_SMB_HOSTS[@]}"; do
+            echo "Starting transfer to $host..."
+            
+            # Create the directory if it doesn't exist (in background)
+            (
+                sshpass -p "$ROCKNIX_PASS" ssh -o StrictHostKeyChecking=no "$ROCKNIX_USER@$host" "mkdir -p $dest_dir" 2>/dev/null
+                
+                # Transfer the file
+                echo "Transferring file to $host:$dest_dir..."
+                if sshpass -p "$ROCKNIX_PASS" scp -o StrictHostKeyChecking=no "$rom_path" "$ROCKNIX_USER@$host:$dest_dir/"; then
+                    echo "✅ File transferred successfully to $host!"
+                else
+                    echo "❌ File transfer failed to $host."
+                fi
+            ) &
+            
+            # Store the process ID and host
+            transfer_pids+=($!)
+            transfer_hosts+=("$host")
+        done
+        
+        # Display transfer status
+        echo "Transfers started in parallel. Waiting for completion..."
+        
+        # Wait for all transfers to complete
+        for i in "${!transfer_pids[@]}"; do
+            echo -n "Waiting for transfer to ${transfer_hosts[$i]} to complete... "
+            if wait ${transfer_pids[$i]}; then
+                echo "✅ Done!"
+            else
+                echo "❌ Failed!"
+            fi
+        done
+        
+        echo "All transfers completed."
+    else
+        echo "⚠️ No RockNix hosts detected. ROM was downloaded locally only."
+        echo "Run 'Scan for SMB hosts' from the SMB menu to detect RockNix devices."
+    fi
+}
+
+# Function to connect to SMB hosts
+connect_to_smb_host() {
+    local host="$1"
+    
+    echo "Connecting to SMB host: $host"
+    
+    if [ -n "$ROCKNIX_USER" ] && [ -n "$ROCKNIX_PASS" ]; then
+        echo "Attempting connection with credentials..."
+        sshpass -p "$ROCKNIX_PASS" ssh -o StrictHostKeyChecking=no "$ROCKNIX_USER@$host" "ls -la /storage/roms" 2>/dev/null
+        
+        if [ $? -eq 0 ]; then
+            echo "✅ Successfully connected to $host"
+            # Update the ROCKNIX_HOST variable to use this host for future operations
+            ROCKNIX_HOST="$host"
+            echo "Available ROMs on $host:"
+            sshpass -p "$ROCKNIX_PASS" ssh -o StrictHostKeyChecking=no "$ROCKNIX_USER@$host" "ls -la /storage/roms"
+            
+            # Ask if user wants to transfer files
+            echo ""
+            read -p "Do you want to transfer files to this host? (y/n): " transfer_choice
+            if [[ "$transfer_choice" == "y" || "$transfer_choice" == "Y" ]]; then
+                transfer_files_to_host "$host"
+            fi
+        else
+            echo "❌ Failed to connect to $host"
+        fi
+    else
+        echo "❌ No credentials provided for SMB connection"
+    fi
+    
+    read -p "Press Enter to continue..."
+    return 0
+}
+
+# Function to connect to all detected SMB hosts
+connect_to_all_smb_hosts() {
+    echo "Connecting to all detected SMB hosts..."
+    
+    if [ ${#DETECTED_SMB_HOSTS[@]} -eq 0 ]; then
+        echo "No SMB hosts detected."
+        read -p "Press Enter to continue..."
+        return 0
+    fi
+    
+    for host in "${DETECTED_SMB_HOSTS[@]}"; do
+        echo "-------------------------------------------"
+        echo "Connecting to $host..."
+        connect_to_smb_host "$host"
+    done
+    
+    return 0
+}
+
+# Function to transfer files to a host
+transfer_files_to_smb_host() {
+    local host="$1"
+    
+    echo "Transfer files to $host"
+    echo "Enter the full path to the file you want to transfer:"
+    read -e file_path
+    
+    if [ ! -f "$file_path" ]; then
+        echo "❌ File not found: $file_path"
+        return 1
+    fi
+    
+    # Get the destination directory
+    echo "Enter the destination directory on the remote host (e.g., /storage/roms/NES):"
+    read -e dest_dir
+    
+    # Default to /storage/roms if empty
+    if [ -z "$dest_dir" ]; then
+        dest_dir="$ROCKNIX_ROMS_PATH"
+    fi
+    
+    # Create the directory if it doesn't exist
+    sshpass -p "$ROCKNIX_PASS" ssh -o StrictHostKeyChecking=no "$ROCKNIX_USER@$host" "mkdir -p $dest_dir" 2>/dev/null
+    
+    # Transfer the file
+    echo "Transferring file to $host:$dest_dir..."
+    sshpass -p "$ROCKNIX_PASS" scp -o StrictHostKeyChecking=no "$file_path" "$ROCKNIX_USER@$host:$dest_dir/"
+    
+    if [ $? -eq 0 ]; then
+        echo "✅ File transferred successfully!"
+    else
+        echo "❌ File transfer failed."
+    fi
+    
+    read -p "Press Enter to continue..."
+    return 0
+}
+
+# Function to show SMB menu
+show_smb_menu() {
+    clear
+    echo "===== SMB Connection Menu ====="
+    echo "1. Scan for SMB hosts"
+    echo "2. Connect to a specific SMB host"
+    echo "3. Connect to all detected SMB hosts"
+    echo "4. Transfer files to current SMB host"
+    echo "5. Transfer file to multiple hosts simultaneously"
+    echo "6. Return to main menu"
+    echo "============================="
+    
+    read -p "Enter your choice [1-6]: " choice
+    
+    case $choice in
+        1)
+            clear
+            echo "===== Scanning for SMB Hosts ====="
+            scan_for_smb_hosts
+            read -p "Press Enter to continue..."
+            show_smb_menu
+            ;;
+        2)
+            clear
+            echo "===== Connect to SMB Host ====="
+            
+            # If we have detected hosts, show them
+            if [ ${#DETECTED_SMB_HOSTS[@]} -gt 0 ]; then
+                echo "Select a host to connect to:"
+                for i in "${!DETECTED_SMB_HOSTS[@]}"; do
+                    echo "$((i+1)). ${DETECTED_SMB_HOSTS[$i]}"
+                done
+                echo "$((${#DETECTED_SMB_HOSTS[@]}+1)). Enter a different host"
+                
+                read -p "Enter your choice: " host_choice
+                
+                if [ "$host_choice" -le ${#DETECTED_SMB_HOSTS[@]} ]; then
+                    # Connect to selected host
+                    connect_to_smb_host "${DETECTED_SMB_HOSTS[$((host_choice-1))]}"
+                else
+                    # Enter a different host
+                    read -p "Enter the IP address of the SMB host: " custom_host
+                    connect_to_smb_host "$custom_host"
+                fi
+            else
+                # No detected hosts, ask for manual entry
+                read -p "Enter the IP address of the SMB host: " custom_host
+                connect_to_smb_host "$custom_host"
+            fi
+            
+            show_smb_menu
+            ;;
+        3)
+            clear
+            echo "===== Connect to All SMB Hosts ====="
+            connect_to_all_smb_hosts
+            show_smb_menu
+            ;;
+        4)
+            clear
+            echo "===== Transfer Files to SMB Host ====="
+            if [ -z "$ROCKNIX_HOST" ]; then
+                echo "No SMB host set. Please connect to a host first."
+                read -p "Press Enter to continue..."
+            else
+                transfer_files_to_smb_host "$ROCKNIX_HOST"
+            fi
+            show_smb_menu
+            ;;
+        5)
+            clear
+            echo "===== Transfer to Multiple Hosts ====="
+            transfer_file_to_multiple_hosts
+            show_smb_menu
+            ;;
+        6)
+            # Return to main menu
+            return
+            ;;
+        *)
+            echo "Invalid choice. Please try again."
+            sleep 1
+            show_smb_menu
+            ;;
+    esac
 }
 
 # Function to show menu
@@ -1026,7 +1438,7 @@ show_more_menu() {
         1)
             clear
             echo "===== Connect to SMB ====="
-            detect_and_connect_smb
+            show_smb_menu
             ;;
         2)
             clear
@@ -1180,82 +1592,123 @@ download_rom() {
     local rom_file="$1"
     local platform="$2"
     
-    # If platform is not provided, use the current platform
-    if [ -z "$platform" ]; then
-        platform="$CURRENT_PLATFORM"
-    fi
-    
-    # Get the archive URL from the function
-    local archive_url=$(get_archive_url "$platform")
-    
-    if [ -z "$archive_url" ]; then
-        echo "Error: No archive URL found for platform $(to_uppercase $platform)"
-        return 1
-    fi
-    
-    # Extract just the filename without extension for display
-    local rom_name=$(basename "$rom_file")
-    local decoded_rom_name=$(urldecode "$rom_name")
-    
-    echo "Downloading ROM: $decoded_rom_name"
-    echo "Platform: $(to_uppercase $platform)"
-    
-    # Get the correct platform directory
-    local platform_dir=$(get_platform_dir "$platform")
-    
-    echo "ROM will be saved to: $platform_dir"
-    
-    # URL encode the ROM file for downloading
-    local encoded_rom_file=$(echo "$rom_file" | sed 's/ /%20/g')
-    
-    # Construct the full download URL
-    local download_url="${archive_url}/${encoded_rom_file}"
-    echo "Download URL: $download_url"
-    
-    # Create platform directory if it doesn't exist
-    mkdir -p "$platform_dir"
-    
-    # Download the ROM file
-    curl -s -L -o "$platform_dir/$decoded_rom_name" "$download_url"
-    local download_status=$?
-    
-    # For PS1 platform, also download the corresponding .bin file if we're downloading a .cue file
-    if [ "$platform" = "ps1" ] && [[ "$rom_file" == *".cue" ]]; then
-        local bin_file="${rom_file%.cue}.bin"
-        local encoded_bin_file=$(echo "$bin_file" | sed 's/ /%20/g')
-        local bin_download_url="${archive_url}/${encoded_bin_file}"
-        local decoded_bin_name=$(urldecode "$(basename "$bin_file")")
+    # If no arguments were provided, this is a direct call from the menu
+    if [ -z "$rom_file" ]; then
+        clear
+        echo "===== Download ROM ====="
         
-        echo "Also downloading corresponding .bin file: $decoded_bin_name"
-        curl -s -L -o "$platform_dir/$decoded_bin_name" "$bin_download_url"
-        
-        if [ $? -eq 0 ]; then
-            echo ".bin file download successful!"
-        else
-            echo "Error downloading .bin file. You may need to download it manually."
+        # Check if a platform is selected
+        if [ -z "$CURRENT_PLATFORM" ]; then
+            echo "Please select a platform first."
+            select_platform
         fi
-    fi
-    
-    if [ $download_status -eq 0 ]; then
-        echo "Download successful!"
-        echo "Desktop"
-        echo "ROM saved to: $platform_dir/$decoded_rom_name"
         
-        # Transfer directly to RockNix
-        echo "Transferring to RockNix..."
-        if sshpass -p "$ROCKNIX_PASS" ssh -o StrictHostKeyChecking=no "$ROCKNIX_USER@$ROCKNIX_HOST" "mkdir -p $ROCKNIX_ROMS_PATH/$platform" && \
-           sshpass -p "$ROCKNIX_PASS" scp -o StrictHostKeyChecking=no "$platform_dir/$decoded_rom_name" "$ROCKNIX_USER@$ROCKNIX_HOST:$ROCKNIX_ROMS_PATH/$platform/"; then
-            echo "ROM transferred to RockNix successfully"
-            echo "RockNix"
-            echo "ROM available at: $ROCKNIX_ROMS_PATH/$platform/$decoded_rom_name"
-        else
-            echo "Failed to transfer ROM to RockNix"
+        # Get the platform directory
+        local platform_dir=$(get_platform_dir "$CURRENT_PLATFORM")
+        
+        # Create the directory if it doesn't exist
+        mkdir -p "$platform_dir"
+        
+        # Get the archive URL for the platform
+        local archive_url=$(get_archive_url "$CURRENT_PLATFORM")
+        
+        if [ -z "$archive_url" ] || [ "$archive_url" == "PUT_DIRECTORY_HERE" ]; then
+            echo "Archive URL not configured for platform: $CURRENT_PLATFORM"
+            read -p "Press Enter to continue..."
             return 1
         fi
+        
+        # Prompt for search term
+        read -p "Enter search term for $CURRENT_PLATFORM ROM: " search_term
+        
+        if [ -z "$search_term" ]; then
+            echo "Search term cannot be empty."
+            read -p "Press Enter to continue..."
+            return 1
+        fi
+        
+        # Search for ROMs
+        search_roms "$search_term" "$CURRENT_PLATFORM"
+        
+        # Prompt for ROM selection
+        read -p "Enter the number of the ROM to download (0 to cancel): " rom_choice
+        
+        if [ "$rom_choice" -eq 0 ]; then
+            echo "Download cancelled."
+            read -p "Press Enter to continue..."
+            return 0
+        fi
+        
+        # Get the ROM URL from the search results
+        local rom_url=$(sed -n "${rom_choice}p" "$TEMP_FILE")
+        
+        if [ -z "$rom_url" ]; then
+            echo "Invalid selection."
+            read -p "Press Enter to continue..."
+            return 1
+        fi
+        
+        # Extract the ROM filename from the URL
+        local rom_filename=$(basename "$rom_url")
+        rom_filename=$(urldecode "$rom_filename")
+        
+        # Download the ROM
+        echo "Downloading $rom_filename..."
+        curl -L -o "$platform_dir/$rom_filename" "$rom_url"
+        
+        if [ $? -eq 0 ]; then
+            echo "✅ ROM downloaded successfully to $platform_dir/$rom_filename"
+            handle_rom_transfer "$platform_dir/$rom_filename" "$CURRENT_PLATFORM"
+        else
+            echo "❌ Failed to download ROM."
+        fi
     else
-        echo "Error downloading ROM. Please try again."
-        return 1
+        # We already have a ROM file selected from the browse menu
+        
+        # If platform is not provided, use the current platform
+        if [ -z "$platform" ]; then
+            platform="$CURRENT_PLATFORM"
+        fi
+        
+        # Get the platform directory
+        local platform_dir=$(get_platform_dir "$platform")
+        
+        # Create the directory if it doesn't exist
+        mkdir -p "$platform_dir"
+        
+        # Extract just the filename without extension for display
+        local rom_name=$(basename "$rom_file")
+        local decoded_rom_name=$(urldecode "$rom_name")
+        
+        # Get the archive URL from the function
+        local archive_url=$(get_archive_url "$platform")
+        
+        if [ -z "$archive_url" ]; then
+            echo "Error: No archive URL found for platform $(to_uppercase $platform)"
+            return 1
+        fi
+        
+        echo "Downloading ROM: $decoded_rom_name"
+        
+        # URL encode the ROM file for downloading
+        local encoded_rom_file=$(echo "$rom_file" | sed 's/ /%20/g')
+        
+        # Construct the full download URL
+        local download_url="${archive_url}/${encoded_rom_file}"
+        
+        # Download the ROM file
+        curl -s -L -o "$platform_dir/$decoded_rom_name" "$download_url"
+        
+        if [ $? -eq 0 ]; then
+            echo "✅ ROM downloaded successfully to $platform_dir/$decoded_rom_name"
+            handle_rom_transfer "$platform_dir/$decoded_rom_name" "$platform"
+        else
+            echo "❌ Failed to download ROM."
+        fi
     fi
+    
+    read -p "Press Enter to continue..."
+    return 0
 }
 
 # Function to copy ROMs to external drive
@@ -1321,6 +1774,121 @@ copy_roms_to_external() {
         done
         echo "Finished copying all ROMs"
     fi
+}
+
+# Function to transfer a file to multiple hosts simultaneously
+transfer_file_to_multiple_hosts() {
+    clear
+    echo "===== Transfer File to Multiple Hosts ====="
+    
+    # Check if we have detected hosts
+    if [ ${#DETECTED_SMB_HOSTS[@]} -eq 0 ]; then
+        echo "No SMB hosts detected. Running scan first..."
+        scan_for_smb_hosts
+        
+        if [ ${#DETECTED_SMB_HOSTS[@]} -eq 0 ]; then
+            echo "❌ No SMB hosts found. Cannot proceed with transfer."
+            read -p "Press Enter to continue..."
+            return 1
+        fi
+    fi
+    
+    # Display available hosts and let user select which ones to use
+    echo "Select hosts to transfer to (space-separated numbers, e.g., '1 3'):"
+    for i in "${!DETECTED_SMB_HOSTS[@]}"; do
+        echo "$((i+1)). ${DETECTED_SMB_HOSTS[$i]}"
+    done
+    
+    read -p "Enter host numbers (or 'all' for all hosts): " host_selection
+    
+    # Process host selection
+    selected_hosts=()
+    
+    if [[ "$host_selection" == "all" ]]; then
+        # Use all detected hosts
+        selected_hosts=("${DETECTED_SMB_HOSTS[@]}")
+    else
+        # Parse the space-separated numbers
+        for num in $host_selection; do
+            if [[ "$num" =~ ^[0-9]+$ ]] && [ "$num" -ge 1 ] && [ "$num" -le ${#DETECTED_SMB_HOSTS[@]} ]; then
+                selected_hosts+=("${DETECTED_SMB_HOSTS[$((num-1))]}")
+            fi
+        done
+    fi
+    
+    # Check if we have any selected hosts
+    if [ ${#selected_hosts[@]} -eq 0 ]; then
+        echo "❌ No valid hosts selected."
+        read -p "Press Enter to continue..."
+        return 1
+    fi
+    
+    echo "Selected ${#selected_hosts[@]} hosts for transfer."
+    
+    # Get file to transfer
+    echo "Enter the full path to the file you want to transfer:"
+    read -e file_path
+    
+    if [ ! -f "$file_path" ]; then
+        echo "❌ File not found: $file_path"
+        read -p "Press Enter to continue..."
+        return 1
+    fi
+    
+    # Get destination directory
+    echo "Enter the destination directory on the remote hosts (e.g., /storage/roms/gb):"
+    read -e dest_dir
+    
+    # Default to /storage/roms if empty
+    if [ -z "$dest_dir" ]; then
+        dest_dir="$ROCKNIX_ROMS_PATH"
+    fi
+    
+    # Transfer to all selected hosts in parallel
+    echo "Transferring file to ${#selected_hosts[@]} hosts simultaneously..."
+    
+    # Array to track transfer processes
+    transfer_pids=()
+    transfer_hosts=()
+    
+    # Start transfers in background
+    for host in "${selected_hosts[@]}"; do
+        echo "Starting transfer to $host..."
+        
+        # Create the directory if it doesn't exist (in background)
+        (
+            sshpass -p "$ROCKNIX_PASS" ssh -o StrictHostKeyChecking=no "$ROCKNIX_USER@$host" "mkdir -p $dest_dir" 2>/dev/null
+            
+            # Transfer the file
+            echo "Transferring file to $host:$dest_dir..."
+            if sshpass -p "$ROCKNIX_PASS" scp -o StrictHostKeyChecking=no "$file_path" "$ROCKNIX_USER@$host:$dest_dir/"; then
+                echo "✅ File transferred successfully to $host!"
+            else
+                echo "❌ File transfer failed to $host."
+            fi
+        ) &
+        
+        # Store the process ID and host
+        transfer_pids+=($!)
+        transfer_hosts+=("$host")
+    done
+    
+    # Display transfer status
+    echo "Transfers started in parallel. Waiting for completion..."
+    
+    # Wait for all transfers to complete
+    for i in "${!transfer_pids[@]}"; do
+        echo -n "Waiting for transfer to ${transfer_hosts[$i]} to complete... "
+        if wait ${transfer_pids[$i]}; then
+            echo "✅ Done!"
+        else
+            echo "❌ Failed!"
+        fi
+    done
+    
+    echo "All transfers completed."
+    read -p "Press Enter to continue..."
+    return 0
 }
 
 # Main function
