@@ -2,7 +2,7 @@
 
 Zuz (means move in Hebrew) is a shell script utility designed to help you download game ROMs, obviously you'll need to update your links yourself due to legal reasons. When you use Android version the rom (link provided by yourself) will be downloaded to android and then transferred to rocknix/Lakka if such is available.
 
-## Version 3 Features:
+## Features:
 
 - **Dynamic IP addresses**: Go to '19.More Options'->' 1. Connect to SMB'->'1. Scan for SMB hosts' Which will scan your active IPs
 - **Multiple transfers**: Transfer in one click the same game to multiple devices (If SMB IP were detected)
