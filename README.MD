@@ -11,46 +11,36 @@ Zuz (means move in Hebrew) is a shell script utility designed to help you downlo
 - **SMB Network Support**: Connect to SMB shares on your local network to access ROMs
 - **Multi-OS Compatibility**: Optimized SMB mounting for MacOS, Windows, and Linux servers & Android
 - **Network Auto-Discovery**: Automatic scanning for SMB servers on your local network
-- **Improved Directory Management**: Enhanced handling of ROM directories with network support
 
 ## Before you run scripts
 
-Check the links, you'll need the right archive.org directories:
+Check the links, you'll need the right archive.org directories per platform:
 ```
-lakka_android.sh - Run this on Android and it'll copy roms TO Lakka 
-rocknix_android.sh - Run this on Android and it'll copy roms TO Rocknix
+ "$base_url/PUT_DIRECTORY_HERE";;
 ```
-
-```
-lakka_mac.sh - Drag to terminal window on macOS and it'll copy TO Lakka 
-rocknix_mac.sh - Drag to terminal window on macOS and it'll copy TO Rocknix
-```
-
 
 ## Usage on Mac
 
 1. Make the script executable:
    ```
-   chmod +x lakka_mac.sh
-   chmod +x rocknix_mac.sh
+   chmod +x zuz.sh (drag file to Terminal)
    ```
 2. Run the script on macOS (drag to Terminal):
    ```
-   ./rocknix_mac.sh
-   ./lakka_mac.sh
+   ./zuz.sh
+
    ```
 ## Usage on Android
 
 1. Download Termux
-2. Open lakka_mac.sh or rocknix_mac.sh on Termux
+2. Open zuz.sh on Termux
 3. Run the script on Termux (Android):
    ```
-   bash rocknix_android.sh
-   bash lakka_android.sh
+   bash zuz.sh
+
    ```
 4. All the platforms will be listed
    
-   You can also specify a custom ROM directory (on your desktop for example):
    ```
    DEFAULT_ROMS_BASE_DIR="$HOME/Desktop/$(whoami)/games-roms"
    ```
