@@ -4,7 +4,7 @@ Zuz (means move in Hebrew) is a shell script utility designed to help you downlo
 
 ## Features:
 
-- **Dynamic IP addresses**: Go to 1. Scan for SMB hosts' Which will scan your active IPs
+- **Dynamic IP addresses**: Go to 1.Scan for SMB hosts Which will scan your active IPs
 - **Multiple transfers**: Transfer in one click the same game to multiple devices (If SMB IP were detected)
 - **Modified Menu**: All platforms are shown first and options like open directory and SMB are in 'More Options'
 - **Links**: The root of the link is the same to all (archive.org) but haven't specified directories, that on you to fill in :)
