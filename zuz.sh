@@ -1547,6 +1547,7 @@ show_menu() {
     echo "           zuz ROM Downloader           "
     echo "========================================"
     local menu_options=(
+        "Search Across All Platforms"
         "Scan for SMB Hosts"
         "Enter a Different Host"
         "NES (Nintendo Entertainment System)"
@@ -1577,20 +1578,20 @@ show_menu() {
     done
     
     echo "----------------------------------------"
-    echo "Use ↑↓ arrows and Enter, or directly type a number (1-22)"
+    echo "Use ↑↓ arrows and Enter, or directly type a number (1-23)"
     echo "----------------------------------------"
     
     # Add the direct input prompt
-    read -p "Enter your choice [1-22]: " choice
+    read -p "Enter your choice [1-23]: " choice
     
     # If choice is empty or not a number, use menu_select for arrow key navigation
-    if [[ -z "$choice" || ! "$choice" =~ ^[0-9]+$ || "$choice" -lt 1 || "$choice" -gt 22 ]]; then
+    if [[ -z "$choice" || ! "$choice" =~ ^[0-9]+$ || "$choice" -lt 1 || "$choice" -gt 23 ]]; then
         menu_select "${menu_options[@]}"
         choice=$?
     fi
     
-    # Convert choice 22 (Exit) to 0 for compatibility
-    if [ "$choice" -eq 22 ]; then
+    # Convert choice 23 (Exit) to 0 for compatibility
+    if [ "$choice" -eq 23 ]; then
         choice=0
     fi
 }
@@ -1606,8 +1607,25 @@ main_menu() {
     while true; do
         show_menu
         
-        # Handle SMB scan option (choice 1)
+        # Handle search across all platforms (choice 1)
         if [ "$choice" -eq 1 ]; then
+            clear
+            echo "===== Search Across All Platforms ====="
+            read -p "Enter search term: " search_term
+            
+            if [ -z "$search_term" ]; then
+                echo "Search term cannot be empty."
+                read -p "Press Enter to continue..."
+                continue
+            fi
+            
+            # Call the search_all_platforms function
+            search_all_platforms "$search_term"
+            continue
+        fi
+        
+        # Handle SMB scan option (choice 2)
+        if [ "$choice" -eq 2 ]; then
             clear
             echo "===== Scan for SMB Hosts ====="
             scan_for_smb_hosts
@@ -1615,84 +1633,87 @@ main_menu() {
             continue
         fi
         
-        # Handle enter custom host option (choice 2)
-        if [ "$choice" -eq 2 ]; then
+        # Handle enter custom host option (choice 3)
+        if [ "$choice" -eq 3 ]; then
             enter_custom_host
             continue
         fi
         
-        # Handle platform selection (choices 3-20)
-        if [ "$choice" -ge 3 ] && [ "$choice" -le 20 ]; then
-            case $choice in
-                3)
+        # Handle platform selection (choices 4-21)
+        if [ "$choice" -ge 4 ] && [ "$choice" -le 21 ]; then
+            # Adjust the platform index to account for the new search option
+            local platform_index=$((choice - 3))
+            
+            case $platform_index in
+                1)
                     CURRENT_PLATFORM="nes"
                     echo "Selected platform: NES"
                     ;;
-                4)
+                2)
                     CURRENT_PLATFORM="snes"
                     echo "Selected platform: SNES"
                     ;;
-                5)
+                3)
                     CURRENT_PLATFORM="gb"
                     echo "Selected platform: Game Boy"
                     ;;
-                6)
+                4)
                     CURRENT_PLATFORM="gba"
                     echo "Selected platform: Game Boy Advance"
                     ;;
-                7)
+                5)
                     CURRENT_PLATFORM="gbc"
                     echo "Selected platform: Game Boy Color"
                     ;;
-                8)
+                6)
                     CURRENT_PLATFORM="sms"
                     echo "Selected platform: Sega Master System"
                     ;;
-                9)
+                7)
                     CURRENT_PLATFORM="genesis"
                     echo "Selected platform: Genesis"
                     ;;
-                10)
+                8)
                     CURRENT_PLATFORM="segacd"
                     echo "Selected platform: Sega CD"
                     ;;
-                11)
+                9)
                     CURRENT_PLATFORM="sega32x"
                     echo "Selected platform: Sega 32X"
                     ;;
-                12)
+                10)
                     CURRENT_PLATFORM="saturn"
                     echo "Selected platform: Sega Saturn"
                     ;;
-                13)
+                11)
                     CURRENT_PLATFORM="gg"
                     echo "Selected platform: Sega Game Gear"
                     ;;
-                14)
+                12)
                     CURRENT_PLATFORM="ngp"
                     echo "Selected platform: Neo Geo Pocket"
                     ;;
-                15)
+                13)
                     CURRENT_PLATFORM="tg16"
                     echo "Selected platform: TurboGrafx-16"
                     ;;
-                16)
+                14)
                     CURRENT_PLATFORM="tgcd"
                     echo "Selected platform: TurboGrafx-CD"
                     ;;
-                17)
+                15)
                     CURRENT_PLATFORM="ps1"
                     echo "Selected platform: PlayStation"
                     ;;
-                18)
+                16)
                     CURRENT_PLATFORM="ps2"
                     echo "Selected platform: PlayStation 2"
                     ;;
-                19)
+                17)
                     CURRENT_PLATFORM="n64"
                     echo "Selected platform: Nintendo 64"
                     ;;
-                20)
+                18)
                     CURRENT_PLATFORM="lynx"
                     echo "Selected platform: Sega lynx"
                     ;;
@@ -1714,7 +1735,7 @@ main_menu() {
         
         # Handle other options
         case $choice in
-            21)
+            22)
                 show_more_menu
                 ;;
             0)
@@ -1792,6 +1813,226 @@ show_more_menu() {
     read -p "Press Enter to continue..."
 }
 
+# Function to search across all platforms
+search_all_platforms() {
+    local search_term="$1"
+    
+    clear
+    echo "===== Searching Across All Platforms ====="
+    echo "Search term: $search_term"
+    
+    # Get all supported platforms
+    local all_platforms=("nes" "snes" "n64" "gbc" "gba" "genesis" "dreamcast" "ps1" "arcade")
+    
+    # Store search results
+    local all_results=()
+    local platform_map=()
+    local platform_urls=()
+    
+    # Search each platform
+    for platform in "${all_platforms[@]}"; do
+        local archive_url=$(get_archive_url "$platform")
+        
+        if [ -z "$archive_url" ] || [ "$archive_url" == "PUT_DIRECTORY_HERE" ]; then
+            echo "Skipping $platform (no archive URL configured)"
+            continue
+        fi
+        
+        echo "Searching $(to_uppercase $platform) platform..."
+        
+        # Create a temporary file for storing ROM names
+        local rom_list_file=$(mktemp)
+        
+        # Check file extensions based on platform
+        if [ "$platform" = "gbc" ]; then
+            curl -s "$archive_url/" | grep -o '<a href="[^"]*\.gbc">' | 
+            sed 's/<a href="\([^"]*\)">/\1/' > "$rom_list_file"
+        elif [ "$platform" = "ps1" ]; then
+            curl -s "$archive_url/" | grep -o '<a href="[^"]*\.cue">' | 
+            sed 's/<a href="\([^"]*\)">/\1/' > "$rom_list_file"
+        else
+            curl -s "$archive_url/" | grep -o '<a href="[^"]*\.zip">' | 
+            sed 's/<a href="\([^"]*\)">/\1/' > "$rom_list_file"
+        fi
+        
+        # Filter ROMs based on search term
+        while IFS= read -r rom_name; do
+            # Decode URL-encoded names
+            rom_name=$(urldecode "$rom_name")
+            
+            if echo "$rom_name" | grep -qi "$search_term"; then
+                # Store the result with platform prefix
+                all_results+=("[$platform] $rom_name")
+                # Map to store original rom name and platform
+                platform_map+=("$platform")
+                platform_urls+=("$archive_url")
+            fi
+        done < "$rom_list_file"
+        
+        # Remove temporary file
+        rm -f "$rom_list_file"
+    done
+    
+    # Display results with arrow key selection
+    if [ ${#all_results[@]} -eq 0 ]; then
+        echo "No ROMs found matching your search across any platform."
+        read -p "Press Enter to continue..."
+        return 0
+    fi
+    
+    # Continue showing ROM selection until user chooses to exit
+    local continue_selection=1
+    while [ $continue_selection -eq 1 ]; do
+        clear
+        echo "Found ${#all_results[@]} ROMs matching '$search_term' across all platforms"
+        echo "Use arrow keys or enter number to select a ROM or choose an option"
+        echo "-----------------------------------------------------"
+        
+        # Add options for downloading all ROMs and returning to main menu
+        local display_options=("Download ALL matching ROMs to their respective platform folders" "${all_results[@]}" "Return to Main Menu")
+        
+        # Display ROMs with arrow key selection and numbers
+        menu_select "${display_options[@]}"
+        local selected=$?
+        
+        # Check if user selected the last option (Return to Main Menu)
+        if [ $selected -eq ${#display_options[@]} ]; then
+            echo "Returning to main menu..."
+            break
+        # Check if user selected the first option (Download All ROMs)
+        elif [ $selected -eq 1 ]; then
+            echo "Downloading all matching ROMs to their respective platform folders..."
+            
+            # Download each ROM in the filtered list
+            local total_roms=${#all_results[@]}
+            local success_count=0
+            local fail_count=0
+            
+            for ((i=0; i<$total_roms; i++)); do
+                local result="${all_results[$i]}"
+                local platform="${platform_map[$i]}"
+                local archive_url="${platform_urls[$i]}"
+                
+                # Extract ROM name without platform prefix
+                local rom_file=$(echo "$result" | sed "s/\[$platform\] //")
+                local decoded_rom_name=$(urldecode "$rom_file")
+                
+                # Get the platform directory
+                local platform_dir="$ROMS_ROOT/$platform"
+                
+                # Create the directory if it doesn't exist
+                mkdir -p "$platform_dir"
+                
+                echo "[$((i+1))/$total_roms] Downloading: $decoded_rom_name to $platform folder"
+                
+                # URL encode the ROM file for downloading
+                local encoded_rom_file=$(echo "$rom_file" | sed 's/ /%20/g')
+                
+                # Construct the full download URL
+                local download_url="${archive_url}/${encoded_rom_file}"
+                
+                # Download the ROM file
+                curl -s -L -o "$platform_dir/$decoded_rom_name" "$download_url"
+                
+                if [ $? -eq 0 ]; then
+                    echo "✅ ROM downloaded successfully to $platform_dir/$decoded_rom_name"
+                    ((success_count++))
+                    
+                    # Transfer to RockNix if hosts are detected
+                    if [ ${#DETECTED_SMB_HOSTS[@]} -gt 0 ]; then
+                        handle_rom_transfer "$platform_dir/$decoded_rom_name" "$platform"
+                    fi
+                else
+                    echo "❌ Failed to download ROM."
+                    ((fail_count++))
+                fi
+                
+                # Brief pause between downloads
+                sleep 0.5
+            done
+            
+            echo "Download summary: $success_count successful, $fail_count failed out of $total_roms ROMs"
+            read -p "Press Enter to continue..."
+            
+            # Return to main menu after batch download
+            break
+        # Check if user pressed ESC (selected will be 0)
+        elif [ $selected -eq 0 ]; then
+            echo "Returning to main menu..."
+            break
+        # User selected a specific ROM
+        else
+            # Adjust the index to account for the "Download All" option
+            local rom_index=$((selected-2))
+            local selected_result="${all_results[$rom_index]}"
+            local platform="${platform_map[$rom_index]}"
+            local archive_url="${platform_urls[$rom_index]}"
+            
+            # Extract ROM name without platform prefix
+            local selected_rom=$(echo "$selected_result" | sed "s/\[$platform\] //")
+            
+            # Show download options for this ROM
+            clear
+            echo "Selected ROM: $selected_rom (Platform: $(to_uppercase $platform))"
+            echo "Choose an action:"
+            echo "-----------------------------------------------------"
+            
+            local rom_options=("Download ROM to $platform folder" "Download ROM and transfer to RockNix" "Return to ROM list")
+            
+            menu_select "${rom_options[@]}"
+            local rom_action=$?
+            
+            case $rom_action in
+                1) # Download ROM locally only
+                    # Get the platform directory
+                    local platform_dir="$ROMS_ROOT/$platform"
+                    mkdir -p "$platform_dir"
+                    
+                    local decoded_rom_name=$(urldecode "$selected_rom")
+                    local encoded_rom_file=$(echo "$selected_rom" | sed 's/ /%20/g')
+                    local download_url="${archive_url}/${encoded_rom_file}"
+                    
+                    echo "Downloading ROM: $decoded_rom_name to $platform folder"
+                    curl -s -L -o "$platform_dir/$decoded_rom_name" "$download_url"
+                    
+                    if [ $? -eq 0 ]; then
+                        echo "✅ ROM downloaded successfully to $platform_dir/$decoded_rom_name"
+                    else
+                        echo "❌ Failed to download ROM."
+                    fi
+                    read -p "Press Enter to continue..."
+                    ;;
+                2) # Download ROM and transfer to RockNix
+                    # First download locally
+                    local platform_dir="$ROMS_ROOT/$platform"
+                    mkdir -p "$platform_dir"
+                    
+                    local decoded_rom_name=$(urldecode "$selected_rom")
+                    local encoded_rom_file=$(echo "$selected_rom" | sed 's/ /%20/g')
+                    local download_url="${archive_url}/${encoded_rom_file}"
+                    
+                    echo "Downloading ROM: $decoded_rom_name to $platform folder"
+                    curl -s -L -o "$platform_dir/$decoded_rom_name" "$download_url"
+                    
+                    if [ $? -eq 0 ]; then
+                        echo "✅ ROM downloaded successfully to $platform_dir/$decoded_rom_name"
+                        # Then transfer to RockNix
+                        handle_rom_transfer "$platform_dir/$decoded_rom_name" "$platform"
+                    else
+                        echo "❌ Failed to download ROM."
+                    fi
+                    read -p "Press Enter to continue..."
+                    ;;
+                3) # Return to ROM list
+                    # Do nothing, just continue the loop
+                    ;;
+            esac
+        fi
+    done
+    
+    echo "Returning to main menu..."
+}
+
 # Function to search and list ROMs
 search_roms() {
     local search_term="$1"
@@ -1867,11 +2108,11 @@ search_roms() {
     while [ $continue_selection -eq 1 ]; do
         clear
         echo "Found ${#filtered_roms[@]} ROMs matching your search"
-        echo "Use arrow keys or enter number to select a ROM to download or return to main menu"
+        echo "Use arrow keys or enter number to select a ROM to download or choose an option"
         echo "-----------------------------------------------------"
         
-        # Add "Return to Main Menu" as the last option
-        local display_options=("${filtered_roms[@]}" "Return to Main Menu")
+        # Add options for downloading all ROMs and returning to main menu
+        local display_options=("Download All ROMs to $platform folder" "${filtered_roms[@]}" "Return to Main Menu")
         
         # Display ROMs with arrow key selection and numbers
         menu_select "${display_options[@]}"
@@ -1881,23 +2122,111 @@ search_roms() {
         if [ $selected -eq ${#display_options[@]} ]; then
             echo "Returning to main menu..."
             break
+        # Check if user selected the first option (Download All ROMs)
+        elif [ $selected -eq 1 ]; then
+            echo "Downloading all ROMs to $platform folder..."
+            
+            # Get the platform directory
+            local platform_dir="$ROMS_ROOT/$platform"
+            
+            # Create the directory if it doesn't exist
+            mkdir -p "$platform_dir"
+            
+            # Download each ROM in the filtered list
+            local total_roms=${#filtered_roms[@]}
+            local success_count=0
+            local fail_count=0
+            
+            for ((i=0; i<$total_roms; i++)); do
+                local rom_file="${filtered_roms[$i]}"
+                local decoded_rom_name=$(urldecode "$rom_file")
+                
+                echo "[$((i+1))/$total_roms] Downloading: $decoded_rom_name"
+                
+                # URL encode the ROM file for downloading
+                local encoded_rom_file=$(echo "$rom_file" | sed 's/ /%20/g')
+                
+                # Construct the full download URL
+                local download_url="${archive_url}/${encoded_rom_file}"
+                
+                # Download the ROM file
+                curl -s -L -o "$platform_dir/$decoded_rom_name" "$download_url"
+                
+                if [ $? -eq 0 ]; then
+                    echo "✅ ROM downloaded successfully to $platform_dir/$decoded_rom_name"
+                    ((success_count++))
+                    
+                    # Transfer to RockNix if hosts are detected
+                    if [ ${#DETECTED_SMB_HOSTS[@]} -gt 0 ]; then
+                        handle_rom_transfer "$platform_dir/$decoded_rom_name" "$platform"
+                    fi
+                else
+                    echo "❌ Failed to download ROM."
+                    ((fail_count++))
+                fi
+                
+                # Brief pause between downloads
+                sleep 0.5
+            done
+            
+            echo "Download summary: $success_count successful, $fail_count failed out of $total_roms ROMs"
+            read -p "Press Enter to continue..."
+            
+            # Return to main menu after batch download
+            break
         # Check if user pressed ESC (selected will be 0)
         elif [ $selected -eq 0 ]; then
             echo "Returning to main menu..."
             break
+        # User selected a specific ROM (offset by 1 due to the "Download All" option)
+        else
+            # Adjust the index to account for the "Download All" option
+            local rom_index=$((selected-2))
+            local selected_rom="${filtered_roms[$rom_index]}"
+            
+            # Show download options for this ROM
+            clear
+            echo "Selected ROM: $selected_rom"
+            echo "Choose an action:"
+            echo "-----------------------------------------------------"
+            
+            local rom_options=("Download ROM to $platform folder" "Download ROM and transfer to RockNix" "Return to ROM list")
+            
+            menu_select "${rom_options[@]}"
+            local rom_action=$?
+            
+            case $rom_action in
+                1) # Download ROM locally only
+                    download_rom "$selected_rom" "$platform"
+                    ;;
+                2) # Download ROM and transfer to RockNix
+                    # First download locally
+                    local platform_dir="$ROMS_ROOT/$platform"
+                    mkdir -p "$platform_dir"
+                    
+                    local decoded_rom_name=$(urldecode "$selected_rom")
+                    local encoded_rom_file=$(echo "$selected_rom" | sed 's/ /%20/g')
+                    local download_url="${archive_url}/${encoded_rom_file}"
+                    
+                    echo "Downloading ROM: $decoded_rom_name"
+                    curl -s -L -o "$platform_dir/$decoded_rom_name" "$download_url"
+                    
+                    if [ $? -eq 0 ]; then
+                        echo "✅ ROM downloaded successfully to $platform_dir/$decoded_rom_name"
+                        # Then transfer to RockNix
+                        handle_rom_transfer "$platform_dir/$decoded_rom_name" "$platform"
+                    else
+                        echo "❌ Failed to download ROM."
+                    fi
+                    ;;
+                3) # Return to ROM list
+                    # Do nothing, just continue the loop
+                    ;;
+            esac
+            
+            # Brief pause to let user see the download completed
+            sleep 1
         fi
-        
-        # Download the selected ROM without asking for confirmation
-        local selected_rom="${display_options[$((selected-1))]}"
-        
-        # Download the ROM immediately
-        download_rom "$selected_rom" "$platform"
-        
-        # Brief pause to let user see the download completed
-        sleep 1
-        
-        # Continue the loop to allow selecting another ROM
-        # No additional prompts - just go back to the ROM selection list
     done
     
     echo "Returning to main menu..."
