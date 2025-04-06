@@ -4,6 +4,8 @@ Zuz (means move in Hebrew) is a shell script utility designed to help you downlo
 
 ## Features:
 
+- **Broad search**: You can search across all platforms and download them all@ 
+- **Download all from search query**: You can now search and to download them all each ROM will be saved to their right platform folder
 - **Dynamic IP addresses**: Go to 1.Scan for SMB hosts Which will scan your active IPs
 - **Multiple transfers**: Transfer in one click the same game to multiple devices (If SMB IPs were detected)
 - **Modified Menu**: All platforms are shown first and options like open directory and SMB are in 'More Options'
