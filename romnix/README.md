@@ -3,6 +3,17 @@
 ## Overview
 ROMNix is a shell script designed to automate the process of finding, downloading, and managing ROMs for the Rocknix gaming system. The script searches for ROMs based on user-defined search terms and downloads them to the appropriate platform-specific directories.
 
+## Usage
+
+### Basic Usage
+1. Edit the script to set your desired platform and search terms
+2. Copy script to ports folder in rocknix and run it locally from device!
+3. Screen will go black till all roms are downloaded then kick you to menu
+4. Press start -> Game Settings -> Update Gamelists
+5. All your roms should be at their appropriate folder 🎉
+---
+Alternatively, run script from terminal on macOS to see if it works
+
 ## Configuration
 The script can be configured by modifying the following variables:
 - `PLATFORM`: Set the target platform (e.g., "nes", "snes", "gba")
@@ -25,16 +36,6 @@ The script can be configured by modifying the following variables:
 - RockNix ROM path: `$HOME/games-internal/roms/[PLATFORM]`
 - Local ROM path: `$HOME/desktop/roms/[PLATFORM]`
 - Android ROM path: '/storage/emulated/0/Download/roms/'
-
-## Usage
-
-### Basic Usage
-1. Edit the script to set your desired platform and search terms
-2. Run the script:
-   ```
-   chmod +x romnix.sh
-   ./romnix.sh
-   ```
 
 ### Transferring ROMs to RockNix
 After downloading ROMs, transfer them to your RockNix device:
