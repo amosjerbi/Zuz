@@ -6,7 +6,7 @@ ROMNix is a shell script designed to automate the process of finding, downloadin
 ## Usage
 
 ### Basic Usage
-1. Edit the script to set your desired platform and search terms
+1. Edit the script to set your desired platform and search terms & URLs
 2. Copy script to ports folder in rocknix and run it locally from device!
 3. Screen will go black till all roms are downloaded then kick you to menu
 4. Press start -> Game Settings -> Update Gamelists
