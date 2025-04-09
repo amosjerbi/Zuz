@@ -22,8 +22,9 @@ The script can be configured by modifying the following variables:
 - Basic shell scripting knowledge for customization
 
 ## Directory Structure
-- Local ROM storage: `$HOME/games-internal/roms/[PLATFORM]`
-- RockNix ROM path: `/storage/roms/[PLATFORM]`
+- RockNix ROM path: `$HOME/games-internal/roms/[PLATFORM]`
+- Local ROM path: `$HOME/desktop/roms/[PLATFORM]`
+- Android ROM path: '/storage/emulated/0/Download/roms/'
 
 ## Usage
 
@@ -46,12 +47,6 @@ Replace:
 - `[ROM_FILE]` with the path to your ROM file
 - `[ROCKNIX_IP]` with your RockNix device's IP address
 - `[PLATFORM]` with the appropriate platform folder
-
-### Alternative Storage
-For Android users, ROMs can be stored in the Download directory:
-```
-/storage/emulated/0/Download/roms/
-```
 
 ## RockNix System Information
 - Default user: root
