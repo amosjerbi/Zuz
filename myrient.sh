@@ -1571,7 +1571,7 @@ enter_custom_host() {
 show_menu() {
     clear
     echo "========================================"
-    echo "           zuz ROM Downloader           "
+    echo "           romnix ROM Downloader           "
     echo "========================================"
     local menu_options=(
         "Search Across All Platforms"
@@ -2072,7 +2072,7 @@ search_roms() {
         temp_dir="/storage/emulated/0/Download"
     fi
     
-    local rom_list_file="$temp_dir/zuz_rom_list.txt"
+    local rom_list_file="$temp_dir/romnix_rom_list.txt"
     local archive_url
     
     archive_url=$(get_archive_url "$platform")
@@ -2090,7 +2090,7 @@ search_roms() {
         echo "Trying alternative location..."
         
         # Try the current directory
-        rom_list_file="./zuz_rom_list.txt"
+        rom_list_file="./romnix_rom_list.txt"
         > "$rom_list_file" 2>/dev/null
         
         if [ ! -w "$rom_list_file" ]; then
@@ -2319,7 +2319,7 @@ download_all_roms() {
         temp_dir="/storage/emulated/0/Download"
     fi
     
-    local rom_list_file="$temp_dir/zuz_rom_list.txt"
+    local rom_list_file="$temp_dir/romnix_rom_list.txt"
     
     # Clear the temp file first
     > "$rom_list_file" 2>/dev/null
@@ -2330,7 +2330,7 @@ download_all_roms() {
         echo "Trying alternative location..."
         
         # Try the current directory
-        rom_list_file="./zuz_rom_list.txt"
+        rom_list_file="./romnix_rom_list.txt"
         > "$rom_list_file" 2>/dev/null
         
         if [ ! -w "$rom_list_file" ]; then
