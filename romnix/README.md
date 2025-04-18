@@ -1,7 +1,8 @@
 # ROMNix - RockNix ROM Management Tool
 
 ## Overview
-ROMNix is a shell script designed to automate the process of finding, downloading, and managing ROMs for the Rocknix gaming system. The script searches for ROMs based on user-defined search terms and downloads them to the appropriate platform-specific directories.
+ROMNix is a shell script that runs directly on rocknix from ports folder.
+It automates the process of finding, downloading, and managing ROMs for the Rocknix gaming system. The script searches for ROMs based on pre-defined search terms and downloads them to the appropriate platform-specific directories.
 
 ## Usage
 
