@@ -1,6 +1,6 @@
 # ROMNix - Move your roms from Android, macOS or iOS to handhelds (rocknix)
 
-Zuz (means move in Hebrew) is a shell script utility designed to help you download game ROMs, obviously you'll need to update your links yourself due to legal reasons. When you use Android version the rom (link provided by yourself) will be downloaded to android and then transferred to rocknix/Lakka if such is available.
+Shell script utility designed to help you download game ROMs, obviously you'll need to update your links yourself due to legal reasons. When you use Android version the rom (link provided by yourself) will be downloaded to android and then transferred to rocknix/Lakka if such is available.
 
 ## Features:
 
@@ -64,44 +64,11 @@ You can also customize the location by:
 2. Passing a directory path as a command-line argument
 3. Connecting to an SMB share that contains your ROMs
 
-## Supported Platforms (I don't provide ROM links this one is on you!)
-
-| Platform | ROM Directory | Description |
-|----------|--------------|----------------|
-| NES | nes | Nintendo Entertainment System |
-| SNES | snes | Super Nintendo Entertainment System |
-| Genesis | genesis | Sega Genesis |
-| Game Boy | gb | Game Boy |
-| Game Boy Advance | gba | Game Boy Advance |
-| Game Boy Color | gbc | Game Boy Color |
-| Game Gear | gamegear | Sega Game Gear |
-| Neo Geo Pocket | ngp | Neo Geo Pocket |
-| Master System | mastersystem | Sega Master System |
-| Sega CD | segacd | Sega CD |
-| Sega 32X | sega32x | Sega 32X |
-| Saturn | saturn | Sega Saturn |
-| TurboGrafx-16 | tg16 | TurboGrafx-16 |
-| TurboGrafx-CD | tgcd | TurboGrafx-CD |
-| PlayStation | ps1 | PlayStation |
-| PlayStation 2 | ps2 | PlayStation 2 |
-| Nintendo 64 | n64 | Nintendo 64 |
-| Dreamcast | dreamcast | Sega Dreamcast |
-| Atari Lynx | lynx | Atari Lynx |
-
-## Requirements
-
-- Bash shell
-- Termux - An app for Android (available for free on Play Store) 
-- Internet connection
-- Sufficient disk space
-
 ## Create a shorcut
 
-🟡 Step 1: Open Termux
-Make sure you're in the terminal.
+🟡 Step 1: Open Termux (download from Play Store)
 
 🟡 Step 2: Open your shell config file
-For bash:
    ```
 nano ~/.bashrc
    ```
@@ -114,11 +81,13 @@ alias romnix='bash /storage/emulated/0/Download/archiveorg.sh'
 Replace romnix with whatever name you want to type, and the path with your actual script.
 
 🟡 Step 4: Save and reload
-Press CTRL + X, then Y, then Enter to save and exit.
+1. Press CTRL then X (there's a CTRL button abouve keyboard)
+2. Press Y
+3. Press Enter to save and exit
 
 Then reload the file:
    ```
-source ~/.bashrc   # or ~/.zshrc
+source ~/.bashrc
    ```
 
 ✅ Step 5: Run it
