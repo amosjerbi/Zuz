@@ -1521,7 +1521,7 @@ enter_custom_host() {
 show_menu() {
     clear
     echo "========================================"
-    echo "           zuz ROM Downloader           "
+    echo "           romnix ROM Downloader           "
     echo "========================================"
     local menu_options=(
         "Search Across All Platforms"
