@@ -1,4 +1,4 @@
-# Zuz - Move your roms from Phone & macOS to handhelds
+# ROMNix - Move your roms from Android, macOS or iOS to handhelds (rocknix)
 
 Zuz (means move in Hebrew) is a shell script utility designed to help you download game ROMs, obviously you'll need to update your links yourself due to legal reasons. When you use Android version the rom (link provided by yourself) will be downloaded to android and then transferred to rocknix/Lakka if such is available.
 
@@ -94,6 +94,49 @@ You can also customize the location by:
 - Termux - An app for Android (available for free on Play Store) 
 - Internet connection
 - Sufficient disk space
+
+## Create a shorcut
+
+🟡 Step 1: Open Termux
+Make sure you're in the terminal.
+
+🟡 Step 2: Open your shell config file
+For bash:
+   ```
+nano ~/.bashrc
+   ```
+
+🟡Step 3: Add your alias
+New window will open add this line:
+   ```
+alias romnix='bash /storage/emulated/0/Download/archiveorg.sh'
+   ```
+Replace romnix with whatever name you want to type, and the path with your actual script.
+
+🟡 Step 4: Save and reload
+Press CTRL + X, then Y, then Enter to save and exit.
+
+Then reload the file:
+   ```
+source ~/.bashrc   # or ~/.zshrc
+   ```
+
+✅ Step 5: Run it
+Now just type:
+   ```
+romnix
+   ```
+…and your script runs!
+
+## Create a widget (dependant on 'create a shortcut')
+Steps:
+Long-press the Termux app icon on your home screen.
+
+1. Tap “Widgets” in the menu that pops up.
+2. Drag the “Termux Shortcut” (1x1 widget) onto your home screen.
+3. It will open a list of scripts from your storage.
+4. Navigate to and select your script (romnix)
+5. Done! Now you can activate screen in one tap! 🎉
 
 ## Legal Notice
 
