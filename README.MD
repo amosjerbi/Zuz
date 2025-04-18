@@ -25,20 +25,20 @@ Check the links, you'll need the right archive.org directories per platform:
 
 1. Make the script executable:
    ```
-   chmod +x zuz.sh (drag file to Terminal)
+   chmod +x archiveorg.sh (drag file to Terminal)
    ```
 2. Run the script on macOS (drag to Terminal):
    ```
-   ./zuz.sh
+   ./archiveorg.sh
 
    ```
 ## Usage on Android
 
 1. Download Termux
-2. Open zuz.sh on Termux
+2. Open archiveorg.sh on Termux
 3. Run the script on Termux (Android):
    ```
-   bash zuz.sh
+   bash archiveorg.sh
 
    ```
 4. All the platforms will be listed
