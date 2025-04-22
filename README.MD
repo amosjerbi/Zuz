@@ -1,4 +1,4 @@
-# ROMNix - Move your roms from Android, macOS or iOS to handhelds (rocknix)
+# ROMNix - Move your roms from Android, macOS or iOS to handhelds (rocknix,muOS)
 
 Shell script utility designed to help you download game ROMs, obviously you'll need to update your links yourself due to legal reasons. When you use Android version the rom (link provided by yourself) will be downloaded to android and then transferred to rocknix/Lakka if such is available.
 
