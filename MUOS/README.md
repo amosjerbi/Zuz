@@ -41,7 +41,7 @@ ROMnix_Manager.muxzip/
 │   │       │   └── ROMnix Manager/
 │   │       │       ├── romnix.sh                                     # Main script for ROM management
 │   │       │       ├── res folder (SourceCodePro-Regular.ttf)        # Contains font for icon
-│   │       │       ├── terminal.sh        # Terminal script
-│   │       │       └── mux_launch.sh.png  # Launch script
+│   │       │       ├── terminal.sh                                   # Terminal script
+│   │       │       └── mux_launch.sh.png                             # Launch script
 
 ```
