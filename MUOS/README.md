@@ -17,7 +17,7 @@ mv ROMnix_Manager.zip ROMnix_Manager.muxzip
 
 ## Installation
 
-1. Connect to your MUOS device by usb-c cable or going to 192.168.1.100 (you IP):9090 (Port) (user:muos, pass:muos)
+1. Connect to your MUOS device by usb-c cable or going to (your IP address):9090 (Port) (user:muos, pass:muos)
 2. Copy ROMnix_Manager.muxzip to Home > SD1 (mmc) > ARCHIVE
 3. On your device activate the ROMnix_Manager.muxzip from Application menu
 4. After successfully installing, you can use ROMnix Manager from the menu
