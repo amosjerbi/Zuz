@@ -20,13 +20,13 @@ mv ROMnix_Manager.zip ROMnix_Manager.muxzip
 1. Connect to your MUOS device by usb-c cable or going to (your IP address):9090 (Port) (user:muos, pass:muos)
 2. Copy ROMnix_Manager.muxzip to Home > SD1 (mmc) > ARCHIVE
 3. On your device activate the ROMnix_Manager.muxzip from Application menu
-4. After successfully installing, you can use ROMnix Manager from the menu
+4. After successfully installing, you can use ROMnix Manager from the menu 🎉
 
 ## Features
 
 - Vanilla code without piracy links
 - Create appropriate folders by platform (NES, SNES, etc.) if it doesn't exist
-- All downloads happens witin MUOS (MustardOS) environment using their Simple Terminal app
+- All downloads happens witin MUOS (MustardOS) environment using Simple Terminal app
 
 ## Project Structure
 
