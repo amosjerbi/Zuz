@@ -1,4 +1,12 @@
 # muOS Basics
+
+## Installtion
+1. Connect to your MUOS device by usb-c cable or going to (your IP address):9090 (Port) (user:muos, pass:muos)
+2. Copy ROMnix_Manager.muxzip to Home > SD1 (mmc) > ARCHIVE
+3. On your device activate the ROMnix_Manager.muxzip from Application menu
+4. After successfully installing, you can use ROMnix Manager from the menu 🎉
+
+# Credits
 ## Bluetooth-Install-Full-PIXIE.muxupd
 A simple tool to manage Bluetooth connections on gaming devices running muOS, allowing you to easily connect and control Bluetooth devices. made by nvcuong1312 
 ```
