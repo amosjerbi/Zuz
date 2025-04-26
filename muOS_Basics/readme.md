@@ -7,7 +7,7 @@ Enable BT detection made by nvcuong1312
 ## HDMI On
 HDMI is activated only when device boots and the cable is in, so I made a script that enables HDMI output in 1080p 60hz
 
-# Themes (https://theme.muos.dev/)
+# Themes
 ## AuroraTwilight.muxthm - 
 
 Theme by Rosabel
@@ -19,4 +19,7 @@ HDMI: No
 ## Scrappy - Creates box arts based on roms you've got
 ```
 https://community.muos.dev/t/scrappy-art-scraper-powered-by-skyscraper/225
+```
+```
+https://theme.muos.dev/
 ```
