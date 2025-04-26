@@ -1,6 +1,6 @@
 # muOS Basics
 ## Bluetooth-Install-Full-PIXIE.muxupd
-Enable BT detection made by nvcuong1312 
+A simple tool to manage Bluetooth connections on gaming devices running muOS, allowing you to easily connect and control Bluetooth devices. made by nvcuong1312 
 ```
 (https://community.muos.dev/t/bluetooth-app/163)
 ```
@@ -16,7 +16,8 @@ Version: 2502.0 | Pixie
 Grid: Yes
 HDMI: No
 
-## Scrappy - Creates box arts based on roms you've got
+## Scrappy
+Scrappy is an art scraper for muOS, with the standout feature of incorporating a fully-fledged Skyscraper app under the hood. This integration enables near-complete support for artwork XML layouts, allowing Scrappy to scrape, cache assets, and generate artwork using XML mixes with ease.
 ```
 https://community.muos.dev/t/scrappy-art-scraper-powered-by-skyscraper/225
 ```
