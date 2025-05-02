@@ -1,5 +1,3 @@
-# muOS Basics
-
 ## Installation
 1. Connect to your MUOS device by usb-c cable or going to (your IP address):9090 (Port) (user:muos, pass:muos)
 2. Copy ROMnix_Manager.muxzip to /mnt/mmc/ARCHIVE (Home > SD1 (mmc) > ARCHIVE)
