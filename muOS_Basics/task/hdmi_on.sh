@@ -1,4 +1,6 @@
 #!/bin/sh
+# HELP: HDMI On
+# ICON: ethernet
 
 # Source the common functions
 . /opt/muos/script/var/func.sh

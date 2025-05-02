@@ -1,4 +1,6 @@
 #!/bin/sh
+# HELP: HDMI Off
+# ICON: ethernet
 
 # Source MustardOS functions
 . /opt/muos/script/var/func.sh
