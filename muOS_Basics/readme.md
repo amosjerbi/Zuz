@@ -16,7 +16,7 @@ A simple tool to manage Bluetooth connections on gaming devices running muOS, al
 HDMI is activated only when device boots and the cable is in, so I made a script that enables HDMI output in 1080p 60hz
 
 # Themes
-## AuroraTwilight.muxthm - 
+AuroraTwilight.muxthm - 
 
 Theme by Rosabel
 Code by cybardev & harryarry
