@@ -1,5 +1,5 @@
 #!/bin/sh
-# HELP: Track Time Display
+# HELP: Track Play Time
 # ICON: track
 # GRID: Tools
 
